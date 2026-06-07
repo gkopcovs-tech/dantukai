@@ -1,0 +1,77 @@
+---
+// src/layouts/Layout.astro
+//
+// The HTML shell that wraps EVERY page on the site.
+// Pages don't write their own <html>, <head>, or <body>.
+// They import this Layout, pass it a title and description,
+// and put their unique content inside it. That content lands
+// in <slot /> below.
+
+import "../styles/theme.css";
+import { site } from "../config/site";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title = site.seo.defaultTitle,
+  description = site.seo.defaultDescription,
+  ogImage = site.seo.ogImage,
+} = Astro.props;
+
+// Build absolute URLs for canonical link and Open Graph image.
+// new URL(path, base) combines them: new URL("/", "https://x.com") → "https://x.com/"
+const canonicalUrl = new URL(Astro.url.pathname, site.seo.siteUrl).toString();
+const ogImageUrl = new URL(ogImage, site.seo.siteUrl).toString();
+---
+
+<!doctype html>
+<html lang={site.seo.locale.split("_")[0]}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary meta -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph (Facebook, LinkedIn, iMessage previews) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content={site.seo.locale} />
+    <meta property="og:site_name" content={site.businessName} />
+
+    <!-- Twitter / X card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Font: Inter from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    />
+  </head>
+
+  <body class="bg-background text-text font-sans antialiased">
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,33 @@
+/* src/styles/theme.css
+ *
+ * REBRAND CONTROL PANEL.
+ *
+ * To rebrand the site for a new client, change ONLY the hex values in
+ * the @theme block below. Every Tailwind utility class on the site
+ * (bg-primary, text-text, border-border, etc.) reads from here, so
+ * changing one value updates every place that color appears.
+ *
+ * If you ever feel the need to change a color directly inside a component,
+ * that's a bug — the color should be coming from a variable here instead.
+ */
+
+@import "tailwindcss";
+
+@theme {
+  /* ── Brand palette ────────────────────────────────────────────────
+   * These six values define the entire visual identity of the site.
+   * Change them, save, refresh, and the site is rebranded.
+   */
+  --color-primary:    #0e7490;  /* main brand color: buttons, links, accents */
+  --color-accent:     #f59e0b;  /* highlight color: CTAs, hover states */
+  --color-background: #ffffff;  /* page background */
+  --color-surface:    #f8fafc;  /* alternate section / card background */
+  --color-text:       #0f172a;  /* body text */
+  --color-border:     #e2e8f0;  /* borders and dividers */
+
+  /* ── Typography ───────────────────────────────────────────────────
+   * One sans-serif font stack for the whole site. Replace "Inter" with
+   * another font name (and load it in Layout.astro) if a rebrand needs it.
+   */
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+}

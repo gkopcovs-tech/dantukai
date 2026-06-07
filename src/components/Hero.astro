@@ -1,0 +1,44 @@
+---
+// src/components/Hero.astro
+//
+// Top-of-page hero: headline, subheadline, CTA button.
+// Background image is set via inline style (Tailwind doesn't generate
+// arbitrary background-image utilities, so we use the style attr).
+
+import { site } from "../config/site";
+---
+
+<section
+  id="hero"
+  class="relative min-h-[600px] flex items-center justify-center text-center px-4 py-20 overflow-hidden"
+>
+  <!-- Background image (absolutely positioned, behind everything) -->
+  <div
+    class="absolute inset-0 -z-10 bg-cover bg-center"
+    style={`background-image: url(${site.hero.backgroundImage});`}
+    role="presentation"
+  ></div>
+
+  <!-- Dark overlay so white text is readable on any image -->
+  <div class="absolute inset-0 -z-10 bg-text/60"></div>
+
+  <!-- Content -->
+  <div class="max-w-3xl mx-auto text-white">
+    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+      {site.hero.headline}
+    </h1>
+    <p class="text-lg sm:text-xl mb-10 text-white/90 max-w-2xl mx-auto">
+      {site.hero.subheadline}
+    </p>
+    <a
+      href={site.hero.ctaHref}
+      class="inline-flex items-center gap-2 bg-accent text-white px-8 py-4 rounded-lg font-semibold text-lg hover:opacity-90 transition shadow-lg"
+    >
+      {site.hero.ctaLabel}
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+  </div>
+</section>
