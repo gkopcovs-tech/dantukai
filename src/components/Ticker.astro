@@ -1,0 +1,67 @@
+---
+// src/components/Ticker.astro
+//
+// Editorial divider band between the hero and the intro section.
+// Renders a horizontal row of italic phrases separated by tan dots.
+// Each item is HTML (so phrases can contain <em>…</em> for emphasis).
+//
+// On narrow screens we let the row scroll horizontally rather than wrap,
+// which keeps the editorial "newspaper headline" feel.
+
+import { site } from "../config/site";
+---
+
+<div class="ticker" aria-hidden="true">
+  {site.ticker.items.map((item, i) => (
+    <>
+      <span class="phrase" set:html={item}></span>
+      {i < site.ticker.items.length - 1 && <span class="dot"></span>}
+    </>
+  ))}
+</div>
+
+<style>
+  .ticker {
+    margin-top: 64px;
+    padding: 22px 64px;
+    border-top: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-line);
+    display: flex;
+    gap: 64px;
+    align-items: center;
+    overflow-x: auto;
+    scrollbar-width: none;
+    font-family: var(--font-serif);
+    font-size: 22px;
+    color: var(--color-ink-soft);
+    font-style: italic;
+    font-weight: 300;
+  }
+  .ticker::-webkit-scrollbar { display: none; }
+
+  .phrase {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .phrase :global(em) {
+    font-style: italic;
+    color: var(--color-tan);
+  }
+
+  .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-tan);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 900px) {
+    .ticker {
+      padding: 18px 24px;
+      gap: 32px;
+      font-size: 18px;
+      margin-top: 40px;
+    }
+  }
+</style>

@@ -1,11 +1,10 @@
 ---
 // src/layouts/Layout.astro
 //
-// The HTML shell that wraps EVERY page on the site.
-// Pages don't write their own <html>, <head>, or <body>.
-// They import this Layout, pass it a title and description,
-// and put their unique content inside it. That content lands
-// in <slot /> below.
+// The HTML shell wrapping every page on the site.
+// Pages don't write their own <html>, <head>, or <body>; they import
+// this Layout, pass a title/description, and put their unique content
+// inside it. That content lands in <slot /> below.
 
 import "../styles/theme.css";
 import { site } from "../config/site";
@@ -58,16 +57,16 @@ const ogImageUrl = new URL(ogImage, site.seo.siteUrl).toString();
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
 
-    <!-- Font: Inter from Google Fonts -->
+    <!-- Fonts: Fraunces (serif, variable axes), Inter (sans), JetBrains Mono (mono) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
     />
   </head>
 
-  <body class="bg-background text-text font-sans antialiased">
+  <body>
     <Header />
     <main>
       <slot />

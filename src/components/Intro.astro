@@ -1,0 +1,82 @@
+---
+// src/components/Intro.astro
+//
+// Editorial "philosophy" block. Two-column grid: a small eyebrow label
+// on the left, a large serif paragraph + signature on the right.
+// The paragraph body comes from site.intro.bodyHtml so words can be
+// italicised (rendered tan) via <em>…</em>.
+
+import { site } from "../config/site";
+
+const { intro } = site;
+---
+
+<section id="intro" class="intro">
+  <div class="eyebrow">{intro.eyebrow}</div>
+  <div class="body">
+    <p set:html={intro.bodyHtml}></p>
+    <div class="sig">
+      <span class="swirl">{intro.signatureName}</span>
+      <span class="role">{intro.signatureRole}</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .intro {
+    padding: 120px 64px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    font-weight: 500;
+    padding-top: 20px;
+  }
+
+  .body p {
+    font-family: var(--font-serif);
+    font-size: 38px;
+    line-height: 1.18;
+    letter-spacing: -0.015em;
+    font-weight: 400;
+    color: var(--color-forest);
+  }
+  .body p :global(em) {
+    font-style: italic;
+    color: var(--color-tan);
+  }
+
+  .sig {
+    margin-top: 32px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--color-ink-soft);
+  }
+  .sig .swirl {
+    font-family: var(--font-serif);
+    font-size: 30px;
+    font-style: italic;
+    color: var(--color-forest);
+    font-weight: 400;
+  }
+
+  @media (max-width: 900px) {
+    .intro {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      padding: 72px 24px;
+    }
+    .body p { font-size: 26px; }
+    .sig .swirl { font-size: 22px; }
+  }
+</style>

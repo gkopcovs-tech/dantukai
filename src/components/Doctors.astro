@@ -1,0 +1,158 @@
+---
+// src/components/Doctors.astro
+//
+// Team section. Dark forest background, light text — the first inverted
+// block on the page. Three cards in a row on desktop, single column on
+// mobile. Each card has a portrait area (real image if doctor.portraitSrc
+// is set, otherwise the labelled placeholder) and a body with role, name
+// + italic surname, short bio, and a meta row (years / license / languages).
+
+import { site } from "../config/site";
+
+const { doctors } = site;
+---
+
+<section id="doctors" class="doctors">
+  <div class="eyebrow">{doctors.eyebrow}</div>
+  <h2 set:html={doctors.headingHtml}></h2>
+
+  <div class="doc-grid">
+    {doctors.items.map((doc) => (
+      <article class="doc">
+        <div
+          class="portrait"
+          style={doc.portraitSrc ? `background-image: url(${doc.portraitSrc});` : ""}
+        >
+          {!doc.portraitSrc && <span class="lbl">{doc.portraitLabel}</span>}
+        </div>
+        <div class="doc-body">
+          <div class="role">{doc.role}</div>
+          <h3>
+            {doc.firstName}<br />
+            <span set:html={doc.surnameHtml}></span>
+          </h3>
+          <p>{doc.bio}</p>
+          <div class="doc-meta">
+            <span>{doc.years}</span>
+            <span>{doc.license}</span>
+            <span>{doc.languages}</span>
+          </div>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .doctors {
+    background: var(--color-forest);
+    color: var(--color-bg);
+    padding: 120px 64px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(244, 239, 232, 0.55);
+    font-weight: 500;
+  }
+
+  .doctors h2 {
+    font-family: var(--font-serif);
+    font-size: 84px;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    font-weight: 400;
+    margin-top: 20px;
+    margin-bottom: 64px;
+  }
+  .doctors h2 :global(em) {
+    font-style: italic;
+    color: var(--color-tan);
+    font-weight: 300;
+  }
+
+  .doc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+
+  .doc {
+    background: rgba(244, 239, 232, 0.04);
+    border: 1px solid rgba(244, 239, 232, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .doc .portrait {
+    height: 360px;
+    background:
+      repeating-linear-gradient(45deg, rgba(244,239,232,0.06) 0 1px, transparent 1px 14px),
+      rgba(244, 239, 232, 0.04);
+    background-size: cover;
+    background-position: center;
+    display: grid;
+    place-items: center;
+    border-bottom: 1px solid rgba(244, 239, 232, 0.1);
+  }
+  .doc .portrait .lbl {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(244, 239, 232, 0.6);
+    border: 1px solid rgba(244, 239, 232, 0.25);
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+
+  .doc-body { padding: 28px 28px 32px; }
+
+  .doc-body .role {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(244, 239, 232, 0.55);
+    margin-bottom: 12px;
+  }
+  .doc-body h3 {
+    font-family: var(--font-serif);
+    font-size: 30px;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    line-height: 1;
+  }
+  .doc-body h3 :global(em) {
+    font-style: italic;
+    color: var(--color-tan);
+  }
+  .doc-body p {
+    font-size: 13px;
+    color: rgba(244, 239, 232, 0.7);
+    margin-top: 14px;
+    line-height: 1.55;
+  }
+
+  .doc-meta {
+    display: flex;
+    gap: 18px;
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(244, 239, 232, 0.1);
+    font-size: 11px;
+    color: rgba(244, 239, 232, 0.55);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 900px) {
+    .doctors { padding: 72px 24px; }
+    .doctors h2 { font-size: 48px; margin-bottom: 40px; }
+    .doc-grid { grid-template-columns: 1fr; gap: 20px; }
+    .doc .portrait { height: 280px; }
+  }
+</style>

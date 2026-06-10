@@ -1,0 +1,381 @@
+---
+// src/components/Booking.astro
+//
+// Booking section — REPLACES the old Contact.astro visually but keeps
+// the exact same Web3Forms backend integration.
+//
+// HOW WEB3FORMS WORKS (unchanged from the old Contact.astro):
+// 1. You sign up at web3forms.com and they give you an "access key".
+// 2. The form POSTs to https://api.web3forms.com/submit with that key.
+// 3. Web3Forms validates and emails you the form contents.
+// 4. No backend code needed.
+//
+// The access key is read from PUBLIC_WEB3FORMS_KEY in .env (and in
+// Cloudflare Pages env vars for production). Step 8 of the build covered
+// creating that .env file.
+//
+// Left side: heading + intro + info blocks (address, hours, phone, email).
+// Right side: editorial form with serif labels and underlined inputs.
+
+import { site } from "../config/site";
+
+const { booking, address } = site;
+const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
+---
+
+<section id="booking" class="booking">
+  <!-- ── Left: heading + clinic info ── -->
+  <div class="booking-left">
+    <div class="eyebrow">{booking.eyebrow}</div>
+    <h2 set:html={booking.headingHtml}></h2>
+    <p>{booking.description}</p>
+
+    <div class="infos">
+      <div class="info">
+        <div class="eyebrow">Adresas</div>
+        <div class="v">
+          {address.street}<br />
+          {address.postalCode} {address.city}
+        </div>
+      </div>
+      <div class="info">
+        <div class="eyebrow">Darbo laikas</div>
+        <div class="v" style="white-space: pre-line;">{site.openingHoursShort}</div>
+      </div>
+      <div class="info">
+        <div class="eyebrow">Telefonas</div>
+        <div class="v">
+          <a href={`tel:${site.phoneRaw}`}>{site.phone}</a>
+        </div>
+      </div>
+      <div class="info">
+        <div class="eyebrow">El. paštas</div>
+        <div class="v">
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Right: the form ── -->
+  <form id="booking-form" class="form">
+    <div class="step">
+      <span class="on">— 01 UŽKLAUSA</span>
+    </div>
+    <h3>Pasirinkite, <em>kam atėjote.</em></h3>
+
+    <!-- Hidden: Web3Forms access key + email subject + honeypot -->
+    <input type="hidden" name="access_key" value={accessKey} />
+    <input
+      type="hidden"
+      name="subject"
+      value={`Nauja užklausa iš ${site.businessName} svetainės`}
+    />
+    <input
+      type="checkbox"
+      name="botcheck"
+      class="honeypot"
+      tabindex="-1"
+      autocomplete="off"
+      aria-hidden="true"
+    />
+
+    <div class="field">
+      <label for="service">Paslauga</label>
+      <select id="service" name="service" required>
+        {booking.serviceOptions.map((opt) => (
+          <option value={opt}>{opt}</option>
+        ))}
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="doctor">Pas kurį specialistą</label>
+      <select id="doctor" name="doctor">
+        {booking.doctorOptions.map((opt) => (
+          <option value={opt}>{opt}</option>
+        ))}
+      </select>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label for="name">Vardas</label>
+        <input id="name" name="name" type="text" required placeholder="Jūsų vardas" />
+      </div>
+      <div class="field">
+        <label for="phone">Telefonas</label>
+        <input id="phone" name="phone" type="tel" required placeholder="+370 ..." />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="email">El. paštas</label>
+      <input id="email" name="email" type="email" required placeholder="vardas@pavyzdys.lt" />
+    </div>
+
+    <div class="field">
+      <label for="preferred">Pageidaujamas laikas</label>
+      <input id="preferred" name="preferred" type="text" placeholder="pvz. trečiadienio popietė" />
+    </div>
+
+    <div class="field">
+      <label for="message">Žinutė (neprivaloma)</label>
+      <input id="message" name="message" type="text" placeholder="trumpas komentaras" />
+    </div>
+
+    <button class="submit" type="submit">
+      <span class="submit-label">{booking.submitLabel}</span>
+      <span class="submitting-label" hidden>Siunčiama…</span>
+      <span class="arrow">→</span>
+    </button>
+
+    <div id="booking-success" class="result success" hidden>
+      {booking.successMessage}
+    </div>
+    <div id="booking-error" class="result error" hidden>
+      {booking.errorMessage}
+    </div>
+  </form>
+</section>
+
+<style>
+  .booking {
+    padding: 140px 64px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    font-weight: 500;
+  }
+
+  /* ── Left column ── */
+  .booking-left h2 {
+    font-family: var(--font-serif);
+    font-size: 84px;
+    letter-spacing: -0.035em;
+    line-height: 0.92;
+    font-weight: 400;
+    color: var(--color-forest);
+    margin-top: 20px;
+  }
+  .booking-left h2 :global(em) {
+    font-style: italic;
+    color: var(--color-tan);
+  }
+  .booking-left p {
+    font-size: 16px;
+    color: var(--color-ink-soft);
+    margin-top: 28px;
+    max-width: 380px;
+    line-height: 1.6;
+  }
+
+  .infos {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 24px;
+  }
+  .info .eyebrow { margin-bottom: 8px; }
+  .info .v {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    color: var(--color-forest);
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+  }
+  .info .v a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-line);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .info .v a:hover {
+    color: var(--color-tan);
+    border-color: var(--color-tan);
+  }
+
+  /* ── Form ── */
+  .form {
+    background: var(--color-bg-soft);
+    border-radius: 6px;
+    padding: 40px;
+    border: 1px solid var(--color-line);
+  }
+  .step {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+  .step .on { color: var(--color-forest); font-weight: 700; }
+
+  .form h3 {
+    font-family: var(--font-serif);
+    font-size: 32px;
+    letter-spacing: -0.02em;
+    color: var(--color-forest);
+    font-weight: 400;
+    margin-bottom: 28px;
+  }
+  .form h3 em {
+    font-style: italic;
+    color: var(--color-tan);
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .field label {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+  .field input,
+  .field select {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--color-ink);
+    padding: 10px 0;
+    font-family: var(--font-serif);
+    font-size: 20px;
+    color: var(--color-forest);
+    outline: none;
+    border-radius: 0;
+  }
+  .field input::placeholder { color: rgba(31, 42, 32, 0.35); }
+  .field input:focus,
+  .field select:focus { border-bottom-color: var(--color-tan); }
+
+  .row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .submit {
+    width: 100%;
+    margin-top: 12px;
+    padding: 16px 24px;
+    border: none;
+    background: var(--color-forest);
+    color: var(--color-bg);
+    border-radius: 999px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s, opacity 0.2s;
+  }
+  .submit:hover { background: var(--color-ink); }
+  .submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  .submit .arrow {
+    font-family: var(--font-serif);
+    font-style: italic;
+  }
+
+  .result {
+    margin-top: 20px;
+    padding: 14px 18px;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .result.success {
+    background: rgba(45, 58, 46, 0.08);
+    color: var(--color-forest);
+    border: 1px solid rgba(45, 58, 46, 0.2);
+  }
+  .result.error {
+    background: rgba(156, 107, 63, 0.1);
+    color: #6b3b1c;
+    border: 1px solid rgba(156, 107, 63, 0.3);
+  }
+
+  /* Honeypot: visually hidden but still in the DOM */
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  @media (max-width: 900px) {
+    .booking {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding: 80px 24px;
+    }
+    .booking-left h2 { font-size: 48px; }
+    .form { padding: 28px; }
+    .infos { gap: 24px 18px; }
+    .row2 { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  const form = document.getElementById("booking-form") as HTMLFormElement | null;
+  const success = document.getElementById("booking-success");
+  const errorBox = document.getElementById("booking-error");
+
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const button = form.querySelector("button[type=submit]") as HTMLButtonElement;
+      const submitLabel = button.querySelector(".submit-label") as HTMLElement | null;
+      const submittingLabel = button.querySelector(".submitting-label") as HTMLElement | null;
+
+      button.disabled = true;
+      submitLabel?.setAttribute("hidden", "");
+      submittingLabel?.removeAttribute("hidden");
+      success?.setAttribute("hidden", "");
+      errorBox?.setAttribute("hidden", "");
+
+      const formData = new FormData(form);
+
+      try {
+        const res = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          body: formData,
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          success?.removeAttribute("hidden");
+          form.reset();
+        } else {
+          errorBox?.removeAttribute("hidden");
+        }
+      } catch {
+        errorBox?.removeAttribute("hidden");
+      } finally {
+        button.disabled = false;
+        submitLabel?.removeAttribute("hidden");
+        submittingLabel?.setAttribute("hidden", "");
+      }
+    });
+  }
+</script>

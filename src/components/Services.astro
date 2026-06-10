@@ -1,50 +1,162 @@
 ---
 // src/components/Services.astro
 //
-// Grid of service cards. Each card renders an icon based on `service.icon`,
-// title, and description. Icons matched to inline Lucide-style SVGs.
+// Editorial services list — one row per service, each row a 5-column
+// grid: num / name / description / price / arrow.
+// The whole row is an anchor so the entire surface is clickable.
+// On hover the row shifts inward slightly and tints — same micro-interaction
+// as the design mockup.
+//
+// Mobile (<900px): rows collapse to a single column with the num + arrow
+// floating in a small top-row and the rest stacked underneath.
 
 import { site } from "../config/site";
+
+const { services } = site;
+const total = services.items.length.toString().padStart(2, "0");
 ---
 
-<section id="services" class="py-20 px-4 bg-background">
-  <div class="max-w-6xl mx-auto">
-    <div class="text-center mb-12">
-      <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-text">
-        {site.services.heading}
-      </h2>
-      <p class="text-lg text-text/70 max-w-2xl mx-auto">
-        {site.services.subheading}
-      </p>
-    </div>
+<section id="services" class="services">
+  <header class="services-head">
+    <h2 set:html={services.headingHtml}></h2>
+    <p>{services.subheading}</p>
+  </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {site.services.items.map((service) => (
-        <article class="bg-surface border border-border rounded-xl p-6 hover:shadow-lg hover:border-primary transition">
-          <div class="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4">
-            {service.icon === "sparkles" && (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.287 1.288L3 12l5.8 1.9a2 2 0 0 1 1.288 1.287L12 21l1.9-5.8a2 2 0 0 1 1.287-1.288L21 12l-5.8-1.9a2 2 0 0 1-1.288-1.287Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>
-            )}
-            {service.icon === "smile" && (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-            )}
-            {service.icon === "shield-check" && (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
-            )}
-            {service.icon === "grid-3x3" && (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
-            )}
-            {service.icon === "baby" && (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3"/></svg>
-            )}
-            {service.icon === "stethoscope" && (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2v2"/><path d="M5 2v2"/><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/></svg>
-            )}
-          </div>
-          <h3 class="text-xl font-semibold mb-2 text-text">{service.title}</h3>
-          <p class="text-text/70 leading-relaxed">{service.description}</p>
-        </article>
-      ))}
-    </div>
+  <div class="svc-list">
+    {services.items.map((service) => (
+      <a class="svc" href={service.href}>
+        <span class="num">{service.num} / {total}</span>
+        <span class="name" set:html={service.nameHtml}></span>
+        <span class="desc">{service.description}</span>
+        <span class="price">
+          {service.price}
+          <span class="unit">{service.priceUnit}</span>
+        </span>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    ))}
   </div>
 </section>
+
+<style>
+  .services {
+    padding: 80px 64px 120px;
+  }
+
+  .services-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: end;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .services-head h2 {
+    font-family: var(--font-serif);
+    font-size: 72px;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    font-weight: 400;
+    color: var(--color-forest);
+  }
+  .services-head h2 :global(em) {
+    font-style: italic;
+    color: var(--color-tan);
+    font-weight: 300;
+  }
+  .services-head p {
+    font-size: 16px;
+    max-width: 420px;
+    color: var(--color-ink-soft);
+    justify-self: end;
+  }
+
+  .svc-list { display: grid; grid-template-columns: 1fr; }
+
+  .svc {
+    display: grid;
+    grid-template-columns: 80px 1.2fr 2fr 1fr 60px;
+    padding: 36px 0;
+    border-bottom: 1px solid var(--color-line);
+    align-items: center;
+    gap: 32px;
+    text-decoration: none;
+    color: inherit;
+    transition: padding 0.2s, background 0.2s;
+  }
+  .svc:hover {
+    padding-left: 16px;
+    padding-right: 16px;
+    background: rgba(230, 217, 195, 0.25);
+  }
+
+  .svc .num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-tan);
+    letter-spacing: 0.1em;
+  }
+  .svc .name {
+    font-family: var(--font-serif);
+    font-size: 30px;
+    letter-spacing: -0.02em;
+    color: var(--color-forest);
+    font-weight: 400;
+  }
+  .svc .name :global(em) {
+    font-style: italic;
+    color: var(--color-tan);
+  }
+  .svc .desc {
+    font-size: 14px;
+    color: var(--color-ink-soft);
+    line-height: 1.5;
+    max-width: 380px;
+  }
+  .svc .price {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    color: var(--color-ink);
+    font-style: italic;
+  }
+  .svc .price .unit {
+    font-size: 11px;
+    font-family: var(--font-sans);
+    color: var(--color-ink-soft);
+    font-style: normal;
+    display: block;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .svc .arrow {
+    font-size: 22px;
+    color: var(--color-ink-soft);
+    text-align: right;
+    font-family: var(--font-serif);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .services { padding: 56px 24px 80px; }
+
+    .services-head {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      padding-bottom: 32px;
+    }
+    .services-head h2 { font-size: 44px; }
+    .services-head p { justify-self: start; }
+
+    .svc {
+      grid-template-columns: 1fr auto;
+      gap: 12px 16px;
+      padding: 28px 0;
+    }
+    .svc:hover { padding-left: 12px; padding-right: 12px; }
+    .svc .num { grid-column: 1; }
+    .svc .arrow { grid-column: 2; grid-row: 1; }
+    .svc .name { grid-column: 1 / -1; font-size: 24px; }
+    .svc .desc { grid-column: 1 / -1; }
+    .svc .price { grid-column: 1 / -1; }
+  }
+</style>

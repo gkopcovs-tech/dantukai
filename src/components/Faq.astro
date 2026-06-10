@@ -1,0 +1,168 @@
+---
+// src/components/Faq.astro
+//
+// Accordion FAQ on a soft-beige background. Two-column layout on desktop:
+// left has the eyebrow + heading + helper sentence with contact email;
+// right has the list of expandable items. Native <button> + aria-expanded
+// for accessibility; a tiny inline script toggles open state.
+// The first item starts open so visitors see one answer for free.
+
+import { site } from "../config/site";
+
+const { faq } = site;
+---
+
+<section id="faq" class="faq">
+  <div class="faq-grid">
+    <div class="faq-head">
+      <div class="eyebrow">{faq.eyebrow}</div>
+      <h2 set:html={faq.headingHtml}></h2>
+      <p class="helper">
+        <span set:html={faq.helperHtml}></span>
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+      </p>
+    </div>
+
+    <div class="faq-list">
+      {faq.items.map((item, i) => (
+        <div class={`faq-item ${i === 0 ? "open" : ""}`}>
+          <button
+            class="row"
+            type="button"
+            aria-expanded={i === 0 ? "true" : "false"}
+          >
+            <span class="q">{item.question}</span>
+            <span class="plus" aria-hidden="true">+</span>
+          </button>
+          <div class="a" hidden={i !== 0}>{item.answer}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq {
+    background: var(--color-bg-soft);
+    padding: 120px 64px;
+  }
+
+  .faq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    font-weight: 500;
+  }
+
+  .faq-head h2 {
+    font-family: var(--font-serif);
+    font-size: 64px;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    font-weight: 400;
+    color: var(--color-forest);
+    margin-top: 20px;
+  }
+  .faq-head h2 :global(em) {
+    font-style: italic;
+    color: var(--color-tan);
+  }
+  .helper {
+    font-size: 14px;
+    color: var(--color-ink-soft);
+    margin-top: 24px;
+    max-width: 320px;
+    line-height: 1.55;
+  }
+  .helper a {
+    color: var(--color-ink);
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-line);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .helper a:hover {
+    color: var(--color-tan);
+    border-color: var(--color-tan);
+  }
+
+  .faq-list { border-top: 1px solid var(--color-line); }
+
+  .faq-item {
+    border-bottom: 1px solid var(--color-line);
+  }
+  .faq-item .row {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    padding: 28px 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    text-align: left;
+    color: inherit;
+    font: inherit;
+  }
+  .faq-item .q {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    letter-spacing: -0.015em;
+    color: var(--color-forest);
+    font-weight: 400;
+  }
+  .faq-item .plus {
+    font-family: var(--font-serif);
+    font-size: 28px;
+    color: var(--color-ink-soft);
+    font-weight: 300;
+    transition: transform 0.2s, color 0.2s;
+    flex-shrink: 0;
+  }
+  .faq-item.open .plus {
+    transform: rotate(45deg);
+    color: var(--color-tan);
+  }
+  .faq-item .a {
+    font-size: 14px;
+    color: var(--color-ink-soft);
+    line-height: 1.6;
+    max-width: 620px;
+    padding: 0 0 28px 0;
+  }
+
+  @media (max-width: 900px) {
+    .faq { padding: 72px 24px; }
+    .faq-grid { grid-template-columns: 1fr; gap: 40px; }
+    .faq-head h2 { font-size: 40px; }
+    .faq-item .q { font-size: 18px; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLDivElement>(".faq-item").forEach((item) => {
+    const button = item.querySelector<HTMLButtonElement>(".row");
+    const answer = item.querySelector<HTMLDivElement>(".a");
+    if (!button || !answer) return;
+
+    button.addEventListener("click", () => {
+      const isOpen = item.classList.toggle("open");
+      button.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      if (isOpen) {
+        answer.removeAttribute("hidden");
+      } else {
+        answer.setAttribute("hidden", "");
+      }
+    });
+  });
+</script>

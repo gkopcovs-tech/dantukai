@@ -1,44 +1,236 @@
 ---
 // src/components/Hero.astro
 //
-// Top-of-page hero: headline, subheadline, CTA button.
-// Background image is set via inline style (Tailwind doesn't generate
-// arbitrary background-image utilities, so we use the style attr).
+// Top-of-page hero: eyebrow → giant multi-line serif headline (left),
+// subheadline + two CTAs + meta line (right). Below it, an editorial
+// image strip — two photo placeholders side-by-side with an absolutely
+// positioned badge overlay. When real images are provided in site.ts
+// (hero.imageLeftSrc / imageRightSrc) they replace the placeholder
+// pattern; otherwise we show the labelled pill in front of a cream
+// repeating-stripe pattern (matches the design mockup).
 
 import { site } from "../config/site";
+
+const { hero } = site;
 ---
 
-<section
-  id="hero"
-  class="relative min-h-[600px] flex items-center justify-center text-center px-4 py-20 overflow-hidden"
->
-  <!-- Background image (absolutely positioned, behind everything) -->
-  <div
-    class="absolute inset-0 -z-10 bg-cover bg-center"
-    style={`background-image: url(${site.hero.backgroundImage});`}
-    role="presentation"
-  ></div>
-
-  <!-- Dark overlay so white text is readable on any image -->
-  <div class="absolute inset-0 -z-10 bg-text/60"></div>
-
-  <!-- Content -->
-  <div class="max-w-3xl mx-auto text-white">
-    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-      {site.hero.headline}
+<section id="hero" class="hero">
+  <div class="hero-text">
+    <div class="eyebrow">{hero.eyebrow}</div>
+    <h1 class="headline">
+      {hero.headlineLines.map((line) => (
+        <span class="line" set:html={line}></span>
+      ))}
     </h1>
-    <p class="text-lg sm:text-xl mb-10 text-white/90 max-w-2xl mx-auto">
-      {site.hero.subheadline}
-    </p>
-    <a
-      href={site.hero.ctaHref}
-      class="inline-flex items-center gap-2 bg-accent text-white px-8 py-4 rounded-lg font-semibold text-lg hover:opacity-90 transition shadow-lg"
-    >
-      {site.hero.ctaLabel}
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="5" y1="12" x2="19" y2="12"/>
-        <polyline points="12 5 19 12 12 19"/>
-      </svg>
-    </a>
+  </div>
+
+  <div class="hero-meta">
+    <p>{hero.subheadline}</p>
+    <div class="hero-actions">
+      <a class="pill" href={hero.primaryCtaHref}>{hero.primaryCtaLabel}</a>
+      <a class="pill ghost" href={hero.secondaryCtaHref}>{hero.secondaryCtaLabel}</a>
+      <span class="meta">{hero.metaText}</span>
+    </div>
   </div>
 </section>
+
+<div class="hero-img">
+  <div class="ph" style={hero.imageLeftSrc ? `background-image: url(${hero.imageLeftSrc});` : ""}>
+    {!hero.imageLeftSrc && <span class="lbl">{hero.imageLeftLabel}</span>}
+  </div>
+  <div class="ph dark" style={hero.imageRightSrc ? `background-image: url(${hero.imageRightSrc});` : ""}>
+    {!hero.imageRightSrc && <span class="lbl">{hero.imageRightLabel}</span>}
+  </div>
+  <div class="badge">
+    <span class="badge-index">{hero.badgeIndex}</span>
+    <span class="badge-tagline">{hero.badgeTagline}</span>
+  </div>
+</div>
+
+<style>
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    font-weight: 500;
+    margin-bottom: 28px;
+  }
+
+  .hero {
+    padding: 96px 64px 80px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 64px;
+    align-items: end;
+  }
+
+  .hero .headline {
+    font-family: var(--font-serif);
+    font-size: 124px;
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    font-weight: 400;
+    color: var(--color-forest);
+  }
+  .hero .headline .line {
+    display: block;
+  }
+  .hero .headline :global(em) {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--color-tan);
+  }
+  .hero .headline :global(.sm) {
+    font-size: 0.36em;
+    vertical-align: 0.6em;
+    font-style: italic;
+    color: var(--color-ink-soft);
+    font-weight: 300;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-bottom: 12px;
+  }
+  .hero-meta p {
+    font-size: 17px;
+    line-height: 1.5;
+    max-width: 380px;
+    color: var(--color-ink-soft);
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .hero-actions .meta {
+    font-size: 12px;
+    color: var(--color-ink-soft);
+    margin-left: 8px;
+  }
+
+  /* Shared pill button (same as Header's) */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border-radius: 999px;
+    background: var(--color-forest);
+    color: var(--color-bg);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .pill:hover { background: #1f2a20; }
+  .pill.ghost {
+    background: transparent;
+    color: var(--color-ink);
+    border: 1px solid var(--color-ink);
+  }
+  .pill.ghost:hover {
+    background: var(--color-ink);
+    color: var(--color-bg);
+  }
+
+  /* ── Hero image strip ── */
+  .hero-img {
+    margin: 0 64px;
+    height: 460px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--color-cream);
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 0;
+  }
+  .ph {
+    position: relative;
+    background:
+      repeating-linear-gradient(45deg, rgba(31,42,32,0.05) 0 1px, transparent 1px 14px),
+      var(--color-cream);
+    background-size: cover;
+    background-position: center;
+    display: grid;
+    place-items: center;
+  }
+  .ph.dark {
+    background:
+      repeating-linear-gradient(45deg, rgba(244,239,232,0.07) 0 1px, transparent 1px 14px),
+      var(--color-forest);
+    background-size: cover;
+    background-position: center;
+  }
+  .ph .lbl {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-forest);
+    opacity: 0.6;
+    border: 1px solid rgba(45,58,46,0.25);
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(244,239,232,0.7);
+  }
+  .ph.dark .lbl {
+    color: var(--color-bg);
+    border-color: rgba(244,239,232,0.4);
+    background: rgba(45,58,46,0.4);
+  }
+
+  .badge {
+    position: absolute;
+    top: 22px;
+    left: 22px;
+    right: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--color-bg);
+    mix-blend-mode: difference;
+    pointer-events: none;
+  }
+  .badge-index {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+  }
+  .badge-tagline {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 18px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding: 56px 24px 48px;
+      align-items: start;
+    }
+    .hero .headline { font-size: 64px; }
+    .hero-meta p { font-size: 16px; }
+
+    .hero-img {
+      margin: 0 24px;
+      height: 320px;
+      grid-template-columns: 1fr;
+    }
+    .hero-img .ph.dark { display: none; }
+    .badge-tagline { font-size: 14px; }
+  }
+
+  @media (max-width: 500px) {
+    .hero .headline { font-size: 48px; }
+  }
+</style>

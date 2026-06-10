@@ -2,32 +2,59 @@
  *
  * REBRAND CONTROL PANEL.
  *
- * To rebrand the site for a new client, change ONLY the hex values in
- * the @theme block below. Every Tailwind utility class on the site
- * (bg-primary, text-text, border-border, etc.) reads from here, so
- * changing one value updates every place that color appears.
+ * To rebrand the site for a new client, change ONLY the hex values
+ * and font names in the @theme block below. Every component reads
+ * from these tokens — either via Tailwind utilities (bg-bg, text-forest,
+ * font-serif, …) or via raw CSS variables (var(--color-forest)) in
+ * scoped <style> blocks.
  *
- * If you ever feel the need to change a color directly inside a component,
- * that's a bug — the color should be coming from a variable here instead.
+ * If you ever feel the need to hard-code a color or font name inside
+ * a component, that's a bug — the value should come from a token here.
  */
 
 @import "tailwindcss";
 
 @theme {
   /* ── Brand palette ────────────────────────────────────────────────
-   * These six values define the entire visual identity of the site.
-   * Change them, save, refresh, and the site is rebranded.
+   * Editorial warm palette. Six tokens define the whole visual identity.
+   *   bg        — page background (warm beige)
+   *   bg-soft   — slightly darker beige for alternating sections (FAQ)
+   *   ink       — primary text color (deep near-black green)
+   *   ink-soft  — secondary text (muted)
+   *   forest    — dark sections + headings (deep green)
+   *   tan       — accent / italic emphasis / hover (warm copper)
+   *   cream     — placeholder / image-area background
+   *   line      — divider lines (translucent ink)
    */
-  --color-primary:    #0e7490;  /* main brand color: buttons, links, accents */
-  --color-accent:     #f59e0b;  /* highlight color: CTAs, hover states */
-  --color-background: #ffffff;  /* page background */
-  --color-surface:    #f8fafc;  /* alternate section / card background */
-  --color-text:       #0f172a;  /* body text */
-  --color-border:     #e2e8f0;  /* borders and dividers */
+  --color-bg:       #f4efe8;
+  --color-bg-soft:  #ebe4d6;
+  --color-ink:      #1f2a20;
+  --color-ink-soft: #4a5447;
+  --color-forest:   #2d3a2e;
+  --color-tan:      #9c6b3f;
+  --color-cream:    #e6d9c3;
+  --color-line:     rgba(31, 42, 32, 0.14);
 
   /* ── Typography ───────────────────────────────────────────────────
-   * One sans-serif font stack for the whole site. Replace "Inter" with
-   * another font name (and load it in Layout.astro) if a rebrand needs it.
+   * Three font stacks. Replace the family names here (and add the
+   * matching @import in Layout.astro) when rebranding.
+   *
+   *   sans  — body copy (Inter)
+   *   serif — headlines & italic emphasis (Fraunces)
+   *   mono  — eyebrow labels, numbers (JetBrains Mono)
    */
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-sans:  "Inter", system-ui, -apple-system, sans-serif;
+  --font-serif: "Fraunces", "Times New Roman", serif;
+  --font-mono:  "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* Global baseline — applied to every page via Layout.astro. */
+html,
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
 }
