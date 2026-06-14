@@ -51,11 +51,11 @@
    * matching @import in Layout.astro) when rebranding.
    *
    *   sans  — body copy (Inter)
-   *   serif — headlines & italic emphasis (Fraunces)
+   *   serif — headlines & italic emphasis (Lora; clean LT diacritics)
    *   mono  — eyebrow labels, numbers (JetBrains Mono)
    */
   --font-sans:  "Inter", system-ui, -apple-system, sans-serif;
-  --font-serif: "Fraunces", "Times New Roman", serif;
+  --font-serif: "Lora", "Georgia", "Times New Roman", serif;
   --font-mono:  "JetBrains Mono", ui-monospace, monospace;
 }
 

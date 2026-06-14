@@ -377,7 +377,7 @@ export const site: SiteConfig = {
         num: "06",
         nameHtml: "Chirurginės procedūros",
         description:
-          "Dantų rovimas, šaknies rezekcija ir kitos burnos chirurgijos procedūros — atliekamos vietoje, savoje klinikoje.",
+          "Dantų rovimas, šaknies rezekcija ir kitos burnos chirurgijos procedūros — atliekamos vietoje, mūsų klinikoje.",
         price: "€50",
         priceUnit: "nuo",
         href: "#booking",
@@ -386,7 +386,7 @@ export const site: SiteConfig = {
         num: "07",
         nameHtml: "Implantai",
         description:
-          "Dantų implantacija prarastiems dantims atkurti. Kaina priklauso nuo situacijos — tikslų planą sudarome konsultacijoje.",
+          "Dantų implantacija prarastiems dantims atkurti. Kaina priklauso nuo situacijos — tikslų planą sudarome konsultacijos metu.",
         price: "€550",
         priceUnit: "nuo",
         href: "#booking",
