@@ -40,7 +40,7 @@ const total = services.items.length.toString().padStart(2, "0");
 
 <style>
   .services {
-    padding: 80px 64px 120px;
+    padding: 72px 64px 88px;
   }
 
   .services-head {
@@ -53,16 +53,16 @@ const total = services.items.length.toString().padStart(2, "0");
   }
   .services-head h2 {
     font-family: var(--font-serif);
-    font-size: 72px;
-    letter-spacing: -0.03em;
-    line-height: 0.95;
+    font-size: clamp(34px, 4vw, 52px);
+    letter-spacing: -0.015em;
+    line-height: 1.1;
     font-weight: 400;
-    color: var(--color-forest);
+    color: var(--color-ink);
   }
   .services-head h2 :global(em) {
-    font-style: italic;
-    color: var(--color-tan);
-    font-weight: 300;
+    font-style: normal;
+    color: inherit;
+    font-weight: 400;
   }
   .services-head p {
     font-size: 16px;
@@ -87,37 +87,37 @@ const total = services.items.length.toString().padStart(2, "0");
   .svc:hover {
     padding-left: 16px;
     padding-right: 16px;
-    background: rgba(230, 217, 195, 0.25);
+    background: rgba(61, 113, 42, 0.07);
   }
 
   .svc .num {
     font-family: var(--font-mono);
     font-size: 11px;
-    color: var(--color-tan);
+    color: var(--color-ink-soft);
     letter-spacing: 0.1em;
   }
   .svc .name {
     font-family: var(--font-serif);
-    font-size: 30px;
-    letter-spacing: -0.02em;
-    color: var(--color-forest);
+    font-size: 23px;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
     font-weight: 400;
   }
   .svc .name :global(em) {
-    font-style: italic;
-    color: var(--color-tan);
+    font-style: normal;
+    color: inherit;
   }
   .svc .desc {
     font-size: 14px;
     color: var(--color-ink-soft);
-    line-height: 1.5;
+    line-height: 1.55;
     max-width: 380px;
   }
   .svc .price {
     font-family: var(--font-serif);
     font-size: 18px;
     color: var(--color-ink);
-    font-style: italic;
+    font-style: normal;
   }
   .svc .price .unit {
     font-size: 11px;
@@ -144,7 +144,7 @@ const total = services.items.length.toString().padStart(2, "0");
       gap: 24px;
       padding-bottom: 32px;
     }
-    .services-head h2 { font-size: 44px; }
+    .services-head h2 { font-size: 34px; }
     .services-head p { justify-self: start; }
 
     .svc {
@@ -155,7 +155,7 @@ const total = services.items.length.toString().padStart(2, "0");
     .svc:hover { padding-left: 12px; padding-right: 12px; }
     .svc .num { grid-column: 1; }
     .svc .arrow { grid-column: 2; grid-row: 1; }
-    .svc .name { grid-column: 1 / -1; font-size: 24px; }
+    .svc .name { grid-column: 1 / -1; font-size: 21px; }
     .svc .desc { grid-column: 1 / -1; }
     .svc .price { grid-column: 1 / -1; }
   }

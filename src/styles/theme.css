@@ -16,24 +16,35 @@
 
 @theme {
   /* ── Brand palette ────────────────────────────────────────────────
-   * Editorial warm palette. Six tokens define the whole visual identity.
-   *   bg        — page background (warm beige)
-   *   bg-soft   — slightly darker beige for alternating sections (FAQ)
-   *   ink       — primary text color (deep near-black green)
-   *   ink-soft  — secondary text (muted)
-   *   forest    — dark sections + headings (deep green)
-   *   tan       — accent / italic emphasis / hover (warm copper)
-   *   cream     — placeholder / image-area background
-   *   line      — divider lines (translucent ink)
+   * ONE green, on white. The single brand green (#3d712a) is sampled from
+   * the (darkened) Ozodenta logo — so the logo and ALL text share the exact
+   * same colour. There are NO coloured section backgrounds: every section is
+   * white and is separated/highlighted with FRAMES (borders + hairline rules).
+   *
+   *   bg        — page background (white)
+   *   bg-soft   — white (kept as a token so components needn't change; sections
+   *               are framed, not filled)
+   *   ink       — ALL TEXT + the logo green (#3d712a, contrast ~5.8:1 on white)
+   *   ink-soft  — same green (hierarchy comes from size/weight, not colour)
+   *   forest    — same green, used where a solid green fill/text was needed
+   *   brand     — same green (button fills, marks)
+   *   tan       — same green (links/accents)
+   *   cream     — barely-there green tint for image-placeholder areas only
+   *   line      — frame / divider colour (the green, low opacity)
+   *   line-strong — heavier frame border for boxed blocks (cards, form, footer)
    */
-  --color-bg:       #f4efe8;
-  --color-bg-soft:  #ebe4d6;
-  --color-ink:      #1f2a20;
-  --color-ink-soft: #4a5447;
-  --color-forest:   #2d3a2e;
-  --color-tan:      #9c6b3f;
-  --color-cream:    #e6d9c3;
-  --color-line:     rgba(31, 42, 32, 0.14);
+  --color-bg:         #ffffff;
+  --color-bg-soft:    #ffffff;   /* no tinted fills — sections are framed */
+  --color-ink:        #3d712a;   /* logo green = ALL text */
+  --color-ink-soft:   #3d712a;   /* same green; hierarchy via size/weight */
+  --color-forest:     #3d712a;   /* same green (legacy token) */
+  --color-brand:      #3d712a;   /* same green — button fills */
+  --color-tan:        #3d712a;   /* same green — links/accents */
+  --color-cream:      #eef3e8;   /* faint green tint for image placeholders */
+  --color-line:       rgba(61, 113, 42, 0.22);  /* frame / hairline */
+  --color-line-strong:rgba(61, 113, 42, 0.45);  /* boxed-block frame */
+  --color-ink-hover:  #2b5320;   /* darker green for hover/active feedback */
+  --color-on-green:   #ffffff;   /* text/icon colour on a solid green fill */
 
   /* ── Typography ───────────────────────────────────────────────────
    * Three font stacks. Replace the family names here (and add the
@@ -49,12 +60,26 @@
 }
 
 /* Global baseline — applied to every page via Layout.astro. */
+
+/* Anchor links (#services, #booking, …) glide instead of jumping.
+ * The media query respects users whose OS is set to reduce motion. */
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+/* The header is sticky, so without this an anchor jump would hide the
+ * section heading underneath it. scroll-margin-top leaves room for it. */
+[id] { scroll-margin-top: 96px; }
+
 html,
 body {
   background: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-sans);
-  font-size: 15px;
-  line-height: 1.55;
+  font-size: 16px;
+  line-height: 1.65;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }

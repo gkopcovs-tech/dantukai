@@ -49,9 +49,10 @@ const { footer, address } = site;
 
 <style>
   .site-footer {
-    background: var(--color-forest);
-    color: var(--color-bg);
-    padding: 96px 64px 40px;
+    background: var(--color-bg);
+    color: var(--color-ink);
+    padding: 72px 64px 40px;
+    border-top: 1px solid var(--color-line-strong);
   }
 
   .top {
@@ -59,7 +60,7 @@ const { footer, address } = site;
     grid-template-columns: 1.4fr 1fr 1fr 1fr;
     gap: 48px;
     padding-bottom: 64px;
-    border-bottom: 1px solid rgba(244, 239, 232, 0.15);
+    border-bottom: 1px solid var(--color-line);
   }
 
   h4 {
@@ -67,28 +68,28 @@ const { footer, address } = site;
     font-size: 11px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: rgba(244, 239, 232, 0.5);
+    color: var(--color-ink-soft);
     font-weight: 500;
     margin-bottom: 20px;
   }
 
   .brand {
     font-family: var(--font-serif);
-    font-size: 56px;
-    letter-spacing: -0.03em;
+    font-size: 40px;
+    letter-spacing: -0.015em;
     line-height: 1;
     font-weight: 400;
   }
   .brand :global(em) {
-    font-style: italic;
-    color: var(--color-tan);
+    font-style: normal;
+    color: inherit;
   }
-  .brand :global(.dot) { color: var(--color-tan); }
+  .brand :global(.dot) { color: var(--color-brand); }
 
   .tag {
     font-family: var(--font-sans);
     font-size: 13px;
-    color: rgba(244, 239, 232, 0.6);
+    color: rgba(255, 255, 255, 0.6);
     letter-spacing: 0.02em;
     display: block;
     margin-top: 18px;
@@ -104,21 +105,21 @@ const { footer, address } = site;
     flex-direction: column;
     gap: 12px;
     font-size: 14px;
-    color: rgba(244, 239, 232, 0.8);
+    color: var(--color-ink);
   }
   ul a {
     color: inherit;
     text-decoration: none;
     transition: color 0.2s;
   }
-  ul a:hover { color: var(--color-tan); }
+  ul a:hover { color: var(--color-ink-hover); }
 
   .addr {
     font-family: var(--font-serif);
-    font-size: 18px;
+    font-size: 17px;
     line-height: 1.5;
-    font-style: italic;
-    color: rgba(244, 239, 232, 0.9);
+    font-style: normal;
+    color: var(--color-ink);
   }
 
   .bottom {
@@ -128,7 +129,7 @@ const { footer, address } = site;
     gap: 16px;
     flex-wrap: wrap;
     font-size: 11px;
-    color: rgba(244, 239, 232, 0.5);
+    color: var(--color-ink-soft);
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
@@ -141,7 +142,7 @@ const { footer, address } = site;
       padding-bottom: 40px;
     }
     .brand-col { grid-column: 1 / -1; }
-    .brand { font-size: 40px; }
+    .brand { font-size: 34px; }
   }
 
   @media (max-width: 500px) {

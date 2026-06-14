@@ -4,13 +4,18 @@
 // The single landing page. Composes the editorial sections in order.
 // Header + Footer come from Layout.astro automatically.
 
+// NOTE (Ozodenta demo): Testimonials is intentionally not rendered —
+// we never show invented reviews for a real business. Re-add it once
+// real Google reviews are in site.ts.
+//
+// The Intro "philosophy" quote was removed at the client's request — it
+// duplicated the hero motto and read as a stray citation block.
+
 import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
 import Ticker from "../components/Ticker.astro";
-import Intro from "../components/Intro.astro";
 import Services from "../components/Services.astro";
 import Doctors from "../components/Doctors.astro";
-import Testimonials from "../components/Testimonials.astro";
 import Faq from "../components/Faq.astro";
 import Booking from "../components/Booking.astro";
 ---
@@ -18,10 +23,8 @@ import Booking from "../components/Booking.astro";
 <Layout>
   <Hero />
   <Ticker />
-  <Intro />
   <Services />
   <Doctors />
-  <Testimonials />
   <Faq />
   <Booking />
 </Layout>

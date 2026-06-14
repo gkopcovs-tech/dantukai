@@ -1,0 +1,18 @@
+# Cloudflare Pages project config.
+#
+# This makes the deploy reproducible instead of relying only on the
+# dashboard. Cloudflare reads `pages_build_output_dir` to know which
+# folder to publish after the build runs.
+#
+# Build settings (set these in the Pages dashboard → Settings → Build):
+#   Framework preset:        Astro
+#   Build command:           npm run build
+#   Build output directory:  dist
+#
+# Node version is pinned in `.nvmrc` (22.12.0) so Cloudflare doesn't
+# fall back to its old default (Node 18), which fails this project's
+# `engines` requirement and breaks the build.
+
+name = "ozodenta-demo"
+compatibility_date = "2026-06-14"
+pages_build_output_dir = "dist"

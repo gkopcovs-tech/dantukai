@@ -6,21 +6,12 @@
 // Components NEVER hardcode client data — they import from here.
 //
 // ─────────────────────────────────────────────────────────────────────────────
-// CLIENT: OZODENTA (demo) — https://www.ozodenta.lt
-// ─────────────────────────────────────────────────────────────────────────────
-// This is a SALES DEMO built from Ozodenta's publicly available data
-// (ozodenta.lt: services, price list, team, contact details, motto).
-// Rules for this demo:
-//   - Only facts published on their own site. No invented credentials,
-//     license numbers, languages, testimonials or review counts.
-//   - The Testimonials section is intentionally NOT rendered (see
-//     src/pages/index.astro) — real Google reviews would slot in there
-//     after the client signs off.
-//   - Prices match their published price list (kainos page, 2026-06).
-//
-// ─────────────────────────────────────────────────────────────────────────────
 // A NOTE ON HTML FIELDS
 // ─────────────────────────────────────────────────────────────────────────────
+// The editorial design uses italic-accent words inside otherwise normal
+// headlines, e.g. "Šypsena <em>kuriama</em> lėtai". To keep all content
+// in one file we allow a few fields to contain small HTML snippets.
+//
 // Convention: any field whose name ends in `Html` or `Lines` is rendered
 // with Astro's `set:html` directive (raw HTML). Everything else is plain
 // text and is HTML-escaped on render.
@@ -53,9 +44,9 @@ export interface Doctor {
   firstName: string;       // "Rūta"
   surnameHtml: string;     // "<em>Vaitkutė</em>"  — italic surname per design
   bio: string;
-  years: string;           // meta chip 1 (any short fact)
-  license: string;         // meta chip 2
-  languages: string;       // meta chip 3
+  years: string;           // "18 m."
+  license: string;         // "Lic. №024"
+  languages: string;       // "DE / EN / LT"
   portraitSrc: string;     // image path; empty string falls back to placeholder
   portraitLabel: string;   // shown in placeholder if portraitSrc is empty
 }
@@ -111,7 +102,7 @@ export interface SiteConfig {
 
   // ── Hours ──
   openingHours: OpeningHour[];
-  openingHoursShort: string;  // condensed for the booking section
+  openingHoursShort: string;  // condensed for the booking section, e.g. "Pr–Pn 8–20 · Št 9–14"
 
   // ── SEO ──
   seo: {
@@ -127,20 +118,20 @@ export interface SiteConfig {
 
   // ── Hero ──
   hero: {
-    eyebrow: string;
+    eyebrow: string;            // "— Vilnius · įkurta 2009"
     headlineLines: string[];    // each entry is HTML, rendered as a separate <span> line
     subheadline: string;
     primaryCtaLabel: string;
     primaryCtaHref: string;
     secondaryCtaLabel: string;
     secondaryCtaHref: string;
-    metaText: string;
+    metaText: string;           // "artimiausias laisvas — …"
     imageLeftLabel: string;     // shown over the left photo placeholder
     imageRightLabel: string;    // shown over the right photo placeholder
     imageLeftSrc: string;       // optional real image; empty = placeholder
     imageRightSrc: string;
-    badgeIndex: string;
-    badgeTagline: string;
+    badgeIndex: string;         // "№ 01 — 04"
+    badgeTagline: string;       // "A quiet place to be treated."
   };
 
   // ── Ticker ──
@@ -150,7 +141,7 @@ export interface SiteConfig {
 
   // ── Intro / philosophy ──
   intro: {
-    eyebrow: string;
+    eyebrow: string;            // "Filosofija — 01"
     bodyHtml: string;           // big serif paragraph; may contain <em>
     signatureName: string;
     signatureRole: string;
@@ -158,46 +149,44 @@ export interface SiteConfig {
 
   // ── Services ──
   services: {
-    eyebrow: string;
-    headingHtml: string;
+    eyebrow: string;            // "Paslaugos — 02"
+    headingHtml: string;        // "Paslaugų<br>kabinetas <em>—</em>"
     subheading: string;
     items: Service[];
   };
 
   // ── Doctors ──
   doctors: {
-    eyebrow: string;
-    headingHtml: string;
+    eyebrow: string;            // "Komanda — 03"
+    headingHtml: string;        // "Žmonės, kuriems <em>patikite</em><br>savo šypseną."
     items: Doctor[];
   };
 
-  // ── Testimonials (kept in the type; NOT rendered in this demo) ──
+  // ── Testimonials ──
   testimonials: {
-    eyebrow: string;
-    headingHtml: string;
-    rating: string;
-    reviewCount: string;
+    eyebrow: string;            // "Pacientai — 04"
+    headingHtml: string;        // "Tylūs<br><em>įrodymai.</em>"
+    rating: string;             // "4.97"
+    reviewCount: string;        // "1 284"
     items: Testimonial[];
   };
 
   // ── FAQ ──
   faq: {
-    eyebrow: string;
-    headingHtml: string;
-    helperHtml: string;
+    eyebrow: string;            // "Klausimai — 05"
+    headingHtml: string;        // "Dažniausi<br>klausimai <em>—</em>"
+    helperHtml: string;         // small paragraph below heading
     items: FaqItem[];
   };
 
   // ── Booking ──
   booking: {
-    eyebrow: string;
-    headingHtml: string;
+    eyebrow: string;            // "Registracija — 06"
+    headingHtml: string;        // "Užsisakykite<br><em>laiką.</em>"
     description: string;
     serviceOptions: string[];   // dropdown options
     doctorOptions: string[];    // dropdown options
-    timeSlots: string[];        // selectable visit times, e.g. "08:00"
-    dateHint: string;           // small note under the date field, e.g. "Dirbame I–V"
-    submitLabel: string;
+    submitLabel: string;        // "Siųsti užklausą"
     successMessage: string;
     errorMessage: string;
   };
@@ -214,55 +203,55 @@ export interface SiteConfig {
 
   // ── Footer ──
   footer: {
-    brandTagline: string;
-    visitHeading: string;
-    linkColumns: FooterLinkColumn[];
-    legalNote: string;
+    brandTagline: string;        // small grey text under the brand wordmark
+    visitHeading: string;        // "Aplankykite"
+    linkColumns: FooterLinkColumn[];  // two columns of small links
+    legalNote: string;           // "Privatumo politika · Slapukai · Pacientų teisės"
   };
   copyright: string;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// The actual config data — OZODENTA
+// The actual config data
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const site: SiteConfig = {
   // ── Brand ─────────────────────────────────────────────────────────────────
-  businessName: "Ozodenta",
-  businessNameHtml: "Ozo<em>denta</em>",
-  logoMark: "O",
-  tagline: "Odontologijos klinika visai šeimai Vilniuje",
-  logoSrc: "/images/ozodenta-logo.png",
-  logoAlt: "Ozodenta — odontologijos klinika Vilniuje",
+  businessName: "Vilniaus Dantų Klinika",
+  businessNameHtml: "Vilniaus <em>dantų klinika</em>",
+  logoMark: "V",
+  tagline: "Modernios odontologijos paslaugos Vilniuje",
+  logoSrc: "/images/logo.svg",
+  logoAlt: "Vilniaus Dantų Klinika logo",
 
   // ── Contact ───────────────────────────────────────────────────────────────
-  phone: "+370 685 32 229",
-  phoneRaw: "+37068532229",
-  email: "info@ozodenta.lt",
+  phone: "+370 5 234 5678",
+  phoneRaw: "+37052345678",
+  email: "info@vilniausdantuklinika.lt",
   address: {
-    street: "Ozo g. 20-10",
+    street: "Gedimino prospektas 24",
     city: "Vilnius",
-    postalCode: "",
+    postalCode: "LT-01103",
     country: "Lietuva",
-    floorNote: "",
+    floorNote: "(antras aukštas)",
   },
-  // Keyless Google Maps embed (?output=embed) — interactive, no API key needed.
   mapEmbedUrl:
-    "https://www.google.com/maps?q=Ozo%20g.%2020%2C%20Vilnius&z=16&output=embed",
+    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2305.5!2d25.2797!3d54.6872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46dd942c8a8d9b9d%3A0x0!2sGedimino+pr.+24%2C+Vilnius!5e0!3m2!1sen!2slt!4v1700000000000",
 
   // ── Hours ─────────────────────────────────────────────────────────────────
   openingHours: [
-    { day: "Pirmadienis – Penktadienis", hours: "08:00 – 20:00" },
-    { day: "Šeštadienis – Sekmadienis",  hours: "Nedirba" },
+    { day: "Pirmadienis – Penktadienis", hours: "08:00 – 19:00" },
+    { day: "Šeštadienis",                hours: "09:00 – 14:00" },
+    { day: "Sekmadienis",                hours: "Nedirba" },
   ],
-  openingHoursShort: "I–V  8:00 – 20:00\nVI–VII  nedirbame",
+  openingHoursShort: "Pr–Pn  8:00 – 19:00\nŠt  9:00 – 14:00",
 
   // ── SEO ───────────────────────────────────────────────────────────────────
   seo: {
-    siteUrl: "https://ozodenta-demo.pages.dev",
-    defaultTitle: "Ozodenta | Odontologijos klinika Vilniuje",
+    siteUrl: "https://vilniausdantuklinika.lt",
+    defaultTitle: "Vilniaus Dantų Klinika | Modernios odontologijos paslaugos",
     defaultDescription:
-      "Odontologijos klinika visai šeimai Vilniuje, Ozo g. 20. Terapinis gydymas, estetinis plombavimas, vaikų odontologija, protezavimas, burnos higiena, chirurgija ir implantai.",
+      "Šeimos odontologija Vilniaus centre. Profilaktika, estetinė restauracija, implantacija, ortodontija, vaikų odontologija. Konsultacija — nemokama.",
     ogImage: "/images/og-image.jpg",
     locale: "lt_LT",
   },
@@ -276,268 +265,285 @@ export const site: SiteConfig = {
   ],
 
   // ── Hero ──────────────────────────────────────────────────────────────────
-  // Headline is Ozodenta's own motto from their About page:
-  // "Šypsena trunka akimirksnį, bet atminty išlieka amžinybę."
   hero: {
-    eyebrow: "Vilnius · Ozo g. 20 · Šeimos odontologijos klinika",
+    eyebrow: "— Vilnius · įkurta 2009",
     headlineLines: [
-      "Jau 13 metų",
-      "rūpinamės",
-      "jūsų šypsena.",
+      "Šypsena",
+      "<em>kuriama</em> lėtai,",
+      "kruopščiai<span class=\"sm\">.</span>",
     ],
-    subheadline: "",
-    primaryCtaLabel: "Registruotis vizitui",
+    subheadline:
+      "Šeimos odontologijos praktika, kurioje kiekvienas dantis žiūrimas kaip darbo objektas — su laiku, šviesa ir tylia kompetencija.",
+    primaryCtaLabel: "Užsisakyti vizitą",
     primaryCtaHref: "#booking",
-    secondaryCtaLabel: "Paslaugos ir kainos",
+    secondaryCtaLabel: "Paslaugos",
     secondaryCtaHref: "#services",
-    metaText: "",
-    imageLeftLabel: "[ INTERJERAS · Ozodenta klinika ]",
-    imageRightLabel: "[ KOMANDA · Ozodenta ]",
+    metaText: "atsakome per 24 val.",
+    imageLeftLabel: "[ INTERJERAS · klinikos vestibiulis ]",
+    imageRightLabel: "[ PORTRETAS · dr. Vaitkutė ]",
     imageLeftSrc: "",
     imageRightSrc: "",
-    badgeIndex: "Vilnius",
-    badgeTagline: "Dovanokime vieni kitiems šypsenas.",
+    badgeIndex: "№ 01 — 04",
+    badgeTagline: "A quiet place to be treated.",
   },
 
   // ── Ticker ────────────────────────────────────────────────────────────────
   ticker: {
     items: [
-      "Visai šeimai",
-      "58 paslaugos",
-      "13 metų patirties",
-      "<em>Ozo g. 20, Vilnius</em>",
-      "I–V 8:00–20:00",
-      "Vaikų odontologija",
+      "Be skubos",
+      "Be skausmo",
+      "Be paslapčių dėl kainos",
+      "<em>Su pagarba laikui</em>",
+      "Šeimoms ir vaikams",
+      "Sedacija pagal poreikį",
     ],
   },
 
   // ── Intro / philosophy ────────────────────────────────────────────────────
   intro: {
-    eyebrow: "Filosofija",
+    eyebrow: "Filosofija — 01",
     bodyHtml:
-      "Šypsena trunka <em>akimirksnį</em>, bet atminty išlieka amžinybę. Todėl savo darbu ir patirtimi siekiame stiprinti jūsų sveikatą ir grąžinti šypseną — kiekvienam šeimos nariui, nuo mažiausio iki vyriausio.",
-    signatureName: "— Kristina Bačulienė",
-    signatureRole: "Gydytoja odontologė · Klinikos vadovė",
+      "Mes tikime, kad <em>geriausias dantis</em> yra tas, kurio neprireikia gydyti antrą kartą. Todėl dirbame ilgiau, kalbamės atviriau ir niekada nesiūlome to, ko nesirinktume sau.",
+    signatureName: "— Dr. R. Vaitkutė",
+    signatureRole: "Klinikos vadovė · 15 m. praktikos",
   },
 
   // ── Services ──────────────────────────────────────────────────────────────
-  // Prices from ozodenta.lt/kainos (published price list).
   services: {
-    eyebrow: "Paslaugos",
-    headingHtml: "Paslaugos visai<br><em>šeimai</em>",
+    eyebrow: "Paslaugos — 02",
+    headingHtml: "Paslaugų<br>kabinetas <em>—</em>",
     subheading:
-      "58 paslaugos visai šeimai vienoje vietoje. Konsultacija ir gydymo plano sudarymas — €30.",
+      "Visa, ko reikia šeimai vienoje vietoje: nuo profilaktikos iki estetinės restauracijos. Konsultacija prieš darbus — visada nemokama.",
     items: [
       {
         num: "01",
-        nameHtml: "Profesionali burnos <em>higiena</em>",
+        nameHtml: "Profilaktinė <em>higiena</em>",
         description:
-          "Profesionali burnos higiena ir dantų apnašų valymas sodos aparatu. Sveikų dantų pagrindas — reguliari priežiūra.",
-        price: "€70",
+          "Air-flow, ultragarsinis valymas ir balinimas. Vizitas trunka 60 min., pabaigoje — žemėlapis tolesnei dantų priežiūrai.",
+        price: "€85",
         priceUnit: "nuo",
         href: "#booking",
       },
       {
         num: "02",
-        nameHtml: "Terapinis <em>gydymas</em>",
+        nameHtml: "Estetinė <em>restauracija</em>",
         description:
-          "Danties šaknų kanalų gydymas: chemomechaninis valymas, plombavimas, MTA. Išsaugome dantį, kai tai įmanoma.",
-        price: "€50",
+          "Mikroskopu atliekamos kompozitinės restauracijos su atspalvio derinimu prie natūralios emalio struktūros.",
+        price: "€180",
         priceUnit: "nuo",
         href: "#booking",
       },
       {
         num: "03",
-        nameHtml: "Estetinis <em>plombavimas</em>",
+        nameHtml: "Implantacija",
         description:
-          "Šviesoje kietėjančios kompozitinės plombos ir estetinis plombavimas — atstatome ir formą, ir natūralią danties išvaizdą.",
-        price: "€70",
+          "Straumann ir Nobel sistemos. Skaitmeninis 3D planavimas, navigacinė chirurgija ir vienadieniai laikini vainikėliai.",
+        price: "€1 400",
         priceUnit: "nuo",
         href: "#booking",
       },
       {
         num: "04",
-        nameHtml: "Vaikų dantų gydymas",
+        nameHtml: "Ortodontija — <em>lygintuvai</em>",
         description:
-          "Pieninių dantų gydymas ir plombavimas, krūminių dantų silantavimas. Ramus, vaikui pritaikytas vizitas.",
-        price: "€15",
-        priceUnit: "nuo",
+          "Skaidrūs Invisalign kapas ir savaime besilygiuojantys breketai. Pirmas vizitas su 3D skenavimu.",
+        price: "€2 800",
+        priceUnit: "kursas",
         href: "#booking",
       },
       {
         num: "05",
-        nameHtml: "Dantų <em>protezavimas</em>",
+        nameHtml: "Vaikų odontologija",
         description:
-          "Metalo keramikos, cirkonio keramikos ir bemetalės keramikos (Emax) vainikėliai — pagal situaciją ir biudžetą.",
-        price: "€400",
+          "Kabinetas pritaikytas vaikams nuo 2 m. Pirmas vizitas — tik pažintinis. Su sedacija ar be jos.",
+        price: "€45",
         priceUnit: "nuo",
         href: "#booking",
       },
       {
         num: "06",
-        nameHtml: "Chirurginės procedūros",
+        nameHtml: "Endodontija",
         description:
-          "Dantų rovimas, šaknies rezekcija ir kitos burnos chirurgijos procedūros — atliekamos vietoje, savoje klinikoje.",
-        price: "€50",
+          "Mikroskopinis kanalų gydymas. Tikslumas ir minimaliai invaziniai sprendimai vienu vizitu.",
+        price: "€260",
         priceUnit: "nuo",
         href: "#booking",
       },
       {
         num: "07",
-        nameHtml: "Implantai",
+        nameHtml: "Protezavimas — <em>laminatės</em>",
         description:
-          "Dantų implantacija prarastiems dantims atkurti. Kaina priklauso nuo situacijos — tikslų planą sudarome konsultacijoje.",
-        price: "€550",
-        priceUnit: "nuo",
+          "Plonosios e.max keramikos laminatės. Be šlifavimo, ten kur tai įmanoma. Su 10 m. garantija.",
+        price: "€720",
+        priceUnit: "vnt",
         href: "#booking",
       },
     ],
   },
 
   // ── Doctors ───────────────────────────────────────────────────────────────
-  // Names and roles exactly as published on ozodenta.lt/specialistai.
-  // No invented credentials — bios stay within what their site states.
   doctors: {
-    eyebrow: "Komanda",
+    eyebrow: "Komanda — 03",
     headingHtml: "Žmonės, kuriems <em>patikite</em><br>savo šypseną.",
     items: [
       {
         role: "Klinikos vadovė",
-        firstName: "Gyd. Kristina",
-        surnameHtml: "<em>Bačulienė</em>",
-        bio: "Gydytoja odontologė ir klinikos vadovė. Vadovauja Ozodenta komandai, kurios patirtis odontologijoje — 13 metų.",
-        years: "Ozodenta · Vilnius",
-        license: "",
-        languages: "",
+        firstName: "Dr. Rūta",
+        surnameHtml: "<em>Vaitkutė</em>",
+        bio: "Endodontas, mikroskopinė odontologija. 18 metų praktikos. VU MF, rezidentūra Berno universitete.",
+        years: "18 m.",
+        license: "Lic. №024",
+        languages: "DE / EN / LT",
         portraitSrc: "",
-        portraitLabel: "[ FOTO · K. BAČULIENĖ ]",
+        portraitLabel: "[ DR. VAITKUTĖ · 4×5 ]",
       },
       {
-        role: "Gydytoja odontologė",
-        firstName: "Gyd. Ana",
-        surnameHtml: "<em>Svarauskė</em>",
-        bio: "Gydytoja odontologė Ozodenta klinikoje — terapinis gydymas ir kasdienė visos šeimos odontologija.",
-        years: "Ozodenta · Vilnius",
-        license: "",
-        languages: "",
+        role: "Implantologas / chirurgas",
+        firstName: "Dr. Tomas",
+        surnameHtml: "<em>Kazakas</em>",
+        bio: "Burnos chirurgija, navigacinė implantacija. Straumann sertifikuotas mentorius regione.",
+        years: "12 m.",
+        license: "Lic. №118",
+        languages: "EN / LT / PL",
         portraitSrc: "",
-        portraitLabel: "[ FOTO · A. SVARAUSKĖ ]",
+        portraitLabel: "[ DR. KAZAKAS · 4×5 ]",
       },
       {
-        role: "Burnos higienistė",
-        firstName: "Diana",
-        surnameHtml: "<em>Jarienė</em>",
-        bio: "Odontologo padėjėja ir burnos higienistė — profesionalios burnos higienos procedūros.",
-        years: "Ozodenta · Vilnius",
-        license: "",
-        languages: "",
+        role: "Vaikų odontologė",
+        firstName: "Dr. Eglė",
+        surnameHtml: "<em>Simonaitė</em>",
+        bio: "Vaikų odontologija ir ortodontija. Specializacija — ankstyvas okluzijos formavimas, baimės įveika.",
+        years: "9 m.",
+        license: "Lic. №207",
+        languages: "EN / LT",
         portraitSrc: "",
-        portraitLabel: "[ FOTO · D. JARIENĖ ]",
+        portraitLabel: "[ DR. SIMONAITĖ · 4×5 ]",
       },
     ],
   },
 
   // ── Testimonials ──────────────────────────────────────────────────────────
-  // NOT RENDERED in this demo (removed from index.astro) — we never show
-  // invented reviews. After sign-off, real Google reviews go here.
   testimonials: {
-    eyebrow: "Pacientai",
+    eyebrow: "Pacientai — 04",
     headingHtml: "Tylūs<br><em>įrodymai.</em>",
-    rating: "",
-    reviewCount: "",
-    items: [],
+    rating: "4.97",
+    reviewCount: "1 284",
+    items: [
+      {
+        name: "Aušra J.",
+        role: "Pacientė nuo 2019 · Antakalnis",
+        quote:
+          "Pirmą kartą per dvidešimt metų išėjau iš odontologo neturėdama jokio nemalonaus jausmo. Net pagalvojau, gal jie kažko nepadarė.",
+      },
+      {
+        name: "Mindaugas R.",
+        role: "Pacientas nuo 2022 · Žvėrynas",
+        quote:
+          "Implantą pastatė tą pačią dieną kaip ir ištraukė dantį. Tas ramumas, su kuriuo dirba dr. Kazakas — neperkamas dalykas.",
+      },
+      {
+        name: "Justė P.",
+        role: "Šeima nuo 2020 · Pilaitė",
+        quote:
+          "Dvi mano dukros eina pas dr. Simonaitę su šypsena. Ir tai net ne metafora — jos prašosi „pas tetą Eglę“. Tai išverčia viską.",
+      },
+    ],
   },
 
   // ── FAQ ───────────────────────────────────────────────────────────────────
-  // Answers built strictly from ozodenta.lt published info (prices, hours).
   faq: {
-    eyebrow: "Klausimai",
-    headingHtml: "Dažniausi<br><em>klausimai</em>",
+    eyebrow: "Klausimai — 05",
+    headingHtml: "Dažniausi<br>klausimai <em>—</em>",
     helperHtml:
-      "Nerandate atsakymo? Paskambinkite +370 685 32 229 arba parašykite — atsakome darbo valandomis.",
+      "Nerandate atsakymo? Parašykite paprastai — atsakome per 24 val.",
     items: [
       {
-        question: "Kiek kainuoja konsultacija?",
+        question: "Ar pirmas vizitas mokamas?",
         answer:
-          "Konsultacija ir gydymo plano sudarymas kainuoja €30. Jei reikia, rentgeno nuotrauka — €10. Po konsultacijos turite aiškų planą ir kainas prieš pradedant bet kokį gydymą.",
+          "Pirma konsultacija — nemokama, jei jos metu nedarome jokių procedūrų. Vizitas trunka iki 45 min., per kurį apžiūrime, padarome panoraminę nuotrauką ir kartu sudarome gydymo planą.",
       },
       {
-        question: "Ar gydote vaikus?",
+        question: "Ar dirbate su vaikais nuo kokio amžiaus?",
         answer:
-          "Taip — vaikų dantų gydymas yra viena pagrindinių mūsų sričių: pieninių dantų gydymas ir plombavimas (nuo €20) bei krūminių dantų silantavimas (€15).",
+          "Priimame vaikus nuo 2 metų. Pirmas vizitas yra tik pažintinis — nieko negydome, kad vaikas pamatytų kabinetą ir gydytoją be streso.",
       },
       {
-        question: "Kokie protezavimo variantai ir kainos?",
+        question: "Ar galimas išsimokėjimas dideliems darbams?",
         answer:
-          "Siūlome metalo keramikos vainikėlius (€400), cirkonio keramikos (€500) ir bemetalės keramikos Emax (€500). Kuris variantas tinkamiausias — aptariame konsultacijos metu.",
+          "Taip. Implantacijai, ortodontijai ir didesnėms restauracijoms galima išskaidyti mokėjimą iki 12 mėnesių be palūkanų. Detales aptariame konsultacijos metu.",
       },
       {
-        question: "Ar atliekate dantų implantaciją?",
+        question: "Kokiomis kalbomis konsultuojate?",
         answer:
-          "Taip, atliekame dantų implantaciją — kaina nuo €550 iki €750, priklausomai nuo situacijos. Tikslų planą ir kainą sudarome po apžiūros ir rentgeno nuotraukos.",
+          "Visa komanda dirba lietuviškai ir angliškai. Atskirai — vokiškai (dr. Vaitkutė) ir lenkiškai (dr. Kazakas).",
       },
       {
-        question: "Koks jūsų darbo laikas?",
+        question: "Ar yra galimybė sedacijos pacientams su baime?",
         answer:
-          "Dirbame pirmadieniais–penktadieniais nuo 8:00 iki 20:00. Savaitgaliais klinika nedirba.",
+          "Taip. Naudojame lengvą sedaciją inhaliaciniu būdu (azoto oksidu) suaugusiems ir vaikams. Apie poreikį prašome įspėti iš anksto.",
       },
       {
-        question: "Kaip mus rasti?",
+        question: "Kiek laiko trunka implanto procedūra?",
         answer:
-          "Klinika įsikūrusi Vilniuje, Ozo g. 20-10. Registruotis galite telefonu +370 685 32 229, el. paštu info@ozodenta.lt arba užpildę registracijos formą šioje svetainėje.",
+          "Pati operacija — apie 45 min. vienam implantui. Iki nuolatinio vainikėlio uždėjimo praeina 3–4 mėnesiai gyjimo, per kurį nešiojate laikiną sprendimą.",
       },
     ],
   },
 
   // ── Booking ───────────────────────────────────────────────────────────────
   booking: {
-    eyebrow: "Registracija",
+    eyebrow: "Registracija — 06",
     headingHtml: "Užsisakykite<br><em>laiką.</em>",
     description:
-      "Pasirinkite paslaugą, datą ir jums patogų laiką — gautą užklausą patvirtinsime telefonu arba el. paštu darbo valandomis.",
+      "Trumpa forma — pasirinkite paslaugą ir patogų laiką. Patvirtinimas el. paštu per 2 valandas. Be skambučių, jei nenorite.",
     serviceOptions: [
-      "Konsultacija ir gydymo planas · €30",
-      "Profesionali burnos higiena",
-      "Terapinis gydymas",
-      "Estetinis plombavimas",
-      "Vaikų dantų gydymas",
-      "Dantų protezavimas",
-      "Chirurginės procedūros",
+      "Profilaktinė higiena · 60 min",
+      "Konsultacija · 45 min",
+      "Estetinė restauracija",
       "Implantacija",
+      "Ortodontija — Invisalign",
+      "Vaikų odontologija",
+      "Endodontija",
+      "Protezavimas — laminatės",
       "Kita",
     ],
     doctorOptions: [
-      "Bet kuris laisvas specialistas",
-      "Gyd. Kristina Bačulienė",
-      "Gyd. Ana Svarauskė",
-      "Burnos higienistė Diana Jarienė",
+      "Bet kuris laisvas",
+      "Dr. Rūta Vaitkutė",
+      "Dr. Tomas Kazakas",
+      "Dr. Eglė Simonaitė",
     ],
-    timeSlots: [
-      "08:00", "09:00", "10:00", "11:00", "12:00", "13:00",
-      "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
-    ],
-    dateHint: "Dirbame I–V 8:00–20:00",
     submitLabel: "Siųsti užklausą",
-    successMessage:
-      "Ačiū — gavome jūsų užklausą. Patvirtinsime pasirinktą laiką darbo valandomis (I–V 8:00–20:00).",
-    errorMessage: "Nepavyko išsiųsti. Pabandykite dar kartą arba paskambinkite +370 685 32 229.",
+    successMessage: "Ačiū — gavome jūsų užklausą. Susisieksime per 2 valandas darbo metu.",
+    errorMessage: "Nepavyko išsiųsti. Pabandykite dar kartą arba paskambinkite mums.",
   },
 
   // ── Contact (kept for MapEmbed if reused later) ───────────────────────────
   contact: {
     heading: "Susisiekite su mumis",
     subheading:
-      "Užpildykite formą arba paskambinkite — atsakysime darbo valandomis.",
-    mapHeading: "Čia mus rasite",
+      "Užpildykite formą arba paskambinkite – atsakysime per vieną darbo dieną.",
+    mapHeading: "Kaip mus rasti",
   },
 
   // ── Social ────────────────────────────────────────────────────────────────
-  socialLinks: [],
+  socialLinks: [
+    {
+      platform: "facebook",
+      url: "https://www.facebook.com/vilniausdantuklinika",
+      label: "Sekite mus Facebook",
+    },
+    {
+      platform: "instagram",
+      url: "https://www.instagram.com/vilniausdantuklinika",
+      label: "Sekite mus Instagram",
+    },
+  ],
 
   // ── Footer ────────────────────────────────────────────────────────────────
   footer: {
     brandTagline:
-      "Odontologijos klinika visai šeimai Vilniuje. Nuo profilaktikos iki implantų — vienoje vietoje.",
+      "Šeimos odontologija Vilniuje. Be skubos, be triukšmo, be paslapčių dėl kainos.",
     visitHeading: "Aplankykite",
     linkColumns: [
       {
@@ -545,6 +551,7 @@ export const site: SiteConfig = {
         items: [
           { label: "Paslaugos",    href: "#services" },
           { label: "Specialistai", href: "#doctors" },
+          { label: "Atsiliepimai", href: "#testimonials" },
           { label: "D.U.K.",       href: "#faq" },
           { label: "Registracija", href: "#booking" },
         ],
@@ -552,13 +559,14 @@ export const site: SiteConfig = {
       {
         heading: "Susisiekti",
         items: [
-          { label: "+370 685 32 229", href: "tel:+37068532229" },
-          { label: "+370 5 240 5656", href: "tel:+37052405656" },
-          { label: "info@ozodenta.lt", href: "mailto:info@ozodenta.lt" },
+          { label: "+370 5 234 5678", href: "tel:+37052345678" },
+          { label: "info@vilniausdantuklinika.lt", href: "mailto:info@vilniausdantuklinika.lt" },
+          { label: "Instagram", href: "https://www.instagram.com/vilniausdantuklinika" },
+          { label: "Facebook",  href: "https://www.facebook.com/vilniausdantuklinika" },
         ],
       },
     ],
     legalNote: "Privatumo politika · Slapukai · Pacientų teisės",
   },
-  copyright: `© ${new Date().getFullYear()} Ozodenta · Visos teisės saugomos`,
+  copyright: `© ${new Date().getFullYear()} Vilniaus Dantų Klinika · Visos teisės saugomos`,
 };

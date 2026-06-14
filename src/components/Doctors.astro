@@ -1,11 +1,12 @@
 ---
 // src/components/Doctors.astro
 //
-// Team section. Dark forest background, light text — the first inverted
-// block on the page. Three cards in a row on desktop, single column on
-// mobile. Each card has a portrait area (real image if doctor.portraitSrc
-// is set, otherwise the labelled placeholder) and a body with role, name
-// + italic surname, short bio, and a meta row (years / license / languages).
+// Team section. Light pale-green background, dark-green text — redesigned
+// for readability (was previously a dark block with low-contrast translucent
+// text). Three cards in a row on desktop, single column on mobile. Each card
+// is white with a portrait area (real image if doctor.portraitSrc is set,
+// otherwise the labelled placeholder) and a body with role, name + italic
+// surname, short bio, and a meta row (years / license / languages).
 
 import { site } from "../config/site";
 
@@ -45,33 +46,35 @@ const { doctors } = site;
 
 <style>
   .doctors {
-    background: var(--color-forest);
-    color: var(--color-bg);
-    padding: 120px 64px;
+    background: var(--color-bg);
+    color: var(--color-ink);
+    padding: 88px 64px;
+    border-top: 1px solid var(--color-line);
   }
 
   .eyebrow {
     font-family: var(--font-sans);
     font-size: 11px;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: rgba(244, 239, 232, 0.55);
+    color: var(--color-ink-soft);
     font-weight: 500;
   }
 
   .doctors h2 {
     font-family: var(--font-serif);
-    font-size: 84px;
-    letter-spacing: -0.03em;
-    line-height: 0.95;
+    font-size: clamp(36px, 4.5vw, 56px);
+    letter-spacing: -0.015em;
+    line-height: 1.1;
     font-weight: 400;
-    margin-top: 20px;
-    margin-bottom: 64px;
+    color: var(--color-ink);
+    margin-top: 18px;
+    margin-bottom: 48px;
   }
   .doctors h2 :global(em) {
-    font-style: italic;
-    color: var(--color-tan);
-    font-weight: 300;
+    font-style: normal;
+    color: inherit;
+    font-weight: 400;
   }
 
   .doc-grid {
@@ -81,32 +84,34 @@ const { doctors } = site;
   }
 
   .doc {
-    background: rgba(244, 239, 232, 0.04);
-    border: 1px solid rgba(244, 239, 232, 0.1);
-    border-radius: 4px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-line-strong);
+    border-radius: 8px;
     overflow: hidden;
   }
 
   .doc .portrait {
-    height: 360px;
+    height: 300px;
     background:
-      repeating-linear-gradient(45deg, rgba(244,239,232,0.06) 0 1px, transparent 1px 14px),
-      rgba(244, 239, 232, 0.04);
+      repeating-linear-gradient(45deg, rgba(28,61,18,0.05) 0 1px, transparent 1px 14px),
+      var(--color-cream);
     background-size: cover;
     background-position: center;
     display: grid;
     place-items: center;
-    border-bottom: 1px solid rgba(244, 239, 232, 0.1);
+    border-bottom: 1px solid var(--color-line);
   }
   .doc .portrait .lbl {
     font-family: var(--font-mono);
     font-size: 10px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(244, 239, 232, 0.6);
-    border: 1px solid rgba(244, 239, 232, 0.25);
+    color: var(--color-forest);
+    opacity: 0.6;
+    border: 1px solid rgba(28, 61, 18, 0.25);
     padding: 6px 12px;
     border-radius: 999px;
+    background: rgba(255, 255, 255, 0.7);
   }
 
   .doc-body { padding: 28px 28px 32px; }
@@ -115,23 +120,24 @@ const { doctors } = site;
     font-size: 11px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: rgba(244, 239, 232, 0.55);
+    color: var(--color-ink-soft);
     margin-bottom: 12px;
   }
   .doc-body h3 {
     font-family: var(--font-serif);
-    font-size: 30px;
-    letter-spacing: -0.02em;
+    font-size: 24px;
+    letter-spacing: -0.01em;
     font-weight: 400;
-    line-height: 1;
+    line-height: 1.1;
+    color: var(--color-ink);
   }
   .doc-body h3 :global(em) {
-    font-style: italic;
-    color: var(--color-tan);
+    font-style: normal;
+    color: inherit;
   }
   .doc-body p {
     font-size: 13px;
-    color: rgba(244, 239, 232, 0.7);
+    color: var(--color-ink-soft);
     margin-top: 14px;
     line-height: 1.55;
   }
@@ -141,9 +147,9 @@ const { doctors } = site;
     gap: 18px;
     margin-top: 22px;
     padding-top: 18px;
-    border-top: 1px solid rgba(244, 239, 232, 0.1);
+    border-top: 1px solid var(--color-line);
     font-size: 11px;
-    color: rgba(244, 239, 232, 0.55);
+    color: var(--color-ink-soft);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     flex-wrap: wrap;
@@ -151,7 +157,7 @@ const { doctors } = site;
 
   @media (max-width: 900px) {
     .doctors { padding: 72px 24px; }
-    .doctors h2 { font-size: 48px; margin-bottom: 40px; }
+    .doctors h2 { font-size: 36px; margin-bottom: 40px; }
     .doc-grid { grid-template-columns: 1fr; gap: 20px; }
     .doc .portrait { height: 280px; }
   }

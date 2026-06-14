@@ -21,6 +21,11 @@ const { faq } = site;
         <span set:html={faq.helperHtml}></span>
         <a href={`mailto:${site.email}`}>{site.email}</a>
       </p>
+
+      <!-- Photo fills the empty space beside the question list. -->
+      <div class="faq-photo">
+        <span class="lbl">[ FOTO · Ozodenta klinika ]</span>
+      </div>
     </div>
 
     <div class="faq-list">
@@ -43,21 +48,51 @@ const { faq } = site;
 
 <style>
   .faq {
-    background: var(--color-bg-soft);
-    padding: 120px 64px;
+    background: var(--color-bg);
+    padding: 88px 64px;
+    border-top: 1px solid var(--color-line);
   }
 
   .faq-grid {
     display: grid;
     grid-template-columns: 1fr 1.6fr;
-    gap: 80px;
-    align-items: start;
+    gap: 64px;
+    align-items: stretch;
+  }
+  /* Left column flexes so the photo grows to match the question list. */
+  .faq-head {
+    display: flex;
+    flex-direction: column;
+  }
+  .faq-photo {
+    margin-top: 40px;
+    flex: 1 1 auto;
+    min-height: 220px;
+    border-radius: 6px;
+    overflow: hidden;
+    background:
+      repeating-linear-gradient(45deg, rgba(28,61,18,0.05) 0 1px, transparent 1px 14px),
+      var(--color-cream);
+    display: grid;
+    place-items: center;
+  }
+  .faq-photo .lbl {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-forest);
+    opacity: 0.6;
+    border: 1px solid rgba(28, 61, 18, 0.25);
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.7);
   }
 
   .eyebrow {
     font-family: var(--font-sans);
     font-size: 11px;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-ink-soft);
     font-weight: 500;
@@ -65,16 +100,16 @@ const { faq } = site;
 
   .faq-head h2 {
     font-family: var(--font-serif);
-    font-size: 64px;
-    letter-spacing: -0.03em;
-    line-height: 0.95;
+    font-size: clamp(32px, 3.6vw, 48px);
+    letter-spacing: -0.015em;
+    line-height: 1.12;
     font-weight: 400;
-    color: var(--color-forest);
-    margin-top: 20px;
+    color: var(--color-ink);
+    margin-top: 18px;
   }
   .faq-head h2 :global(em) {
-    font-style: italic;
-    color: var(--color-tan);
+    font-style: normal;
+    color: inherit;
   }
   .helper {
     font-size: 14px;
@@ -91,8 +126,8 @@ const { faq } = site;
     transition: color 0.2s, border-color 0.2s;
   }
   .helper a:hover {
-    color: var(--color-tan);
-    border-color: var(--color-tan);
+    color: var(--color-ink-hover);
+    border-color: var(--color-ink-hover);
   }
 
   .faq-list { border-top: 1px solid var(--color-line); }
@@ -116,9 +151,9 @@ const { faq } = site;
   }
   .faq-item .q {
     font-family: var(--font-serif);
-    font-size: 22px;
-    letter-spacing: -0.015em;
-    color: var(--color-forest);
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
     font-weight: 400;
   }
   .faq-item .plus {
@@ -144,8 +179,9 @@ const { faq } = site;
   @media (max-width: 900px) {
     .faq { padding: 72px 24px; }
     .faq-grid { grid-template-columns: 1fr; gap: 40px; }
-    .faq-head h2 { font-size: 40px; }
-    .faq-item .q { font-size: 18px; }
+    .faq-head h2 { font-size: 32px; }
+    .faq-item .q { font-size: 17px; }
+    .faq-photo { display: none; }
   }
 </style>
 

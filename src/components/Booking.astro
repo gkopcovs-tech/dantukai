@@ -24,6 +24,7 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
 ---
 
 <section id="booking" class="booking">
+ <div class="booking-grid">
   <!-- ── Left: heading + clinic info ── -->
   <div class="booking-left">
     <div class="eyebrow">{booking.eyebrow}</div>
@@ -32,15 +33,15 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
 
     <div class="infos">
       <div class="info">
+        <div class="eyebrow">Darbo laikas</div>
+        <div class="v" style="white-space: pre-line;">{site.openingHoursShort}</div>
+      </div>
+      <div class="info">
         <div class="eyebrow">Adresas</div>
         <div class="v">
           {address.street}<br />
           {address.postalCode} {address.city}
         </div>
-      </div>
-      <div class="info">
-        <div class="eyebrow">Darbo laikas</div>
-        <div class="v" style="white-space: pre-line;">{site.openingHoursShort}</div>
       </div>
       <div class="info">
         <div class="eyebrow">Telefonas</div>
@@ -55,14 +56,28 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
         </div>
       </div>
     </div>
+
+    <!-- Interactive map fills the space under the contact details,
+         beside the form ("Čia mus rasite"). -->
+    {site.mapEmbedUrl && (
+      <div class="booking-map">
+        <div class="eyebrow">{site.contact.mapHeading}</div>
+        <div class="map-frame">
+          <iframe
+            src={site.mapEmbedUrl}
+            title={`${site.businessName} — ${address.street}, ${address.city}`}
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    )}
   </div>
 
   <!-- ── Right: the form ── -->
   <form id="booking-form" class="form">
-    <div class="step">
-      <span class="on">— 01 UŽKLAUSA</span>
-    </div>
-    <h3>Pasirinkite, <em>kam atėjote.</em></h3>
+    <h3>Pasirinkite norimą paslaugą.</h3>
 
     <!-- Hidden: Web3Forms access key + email subject + honeypot -->
     <input type="hidden" name="access_key" value={accessKey} />
@@ -90,7 +105,7 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
     </div>
 
     <div class="field">
-      <label for="doctor">Pas kurį specialistą</label>
+      <label for="doctor">Specialistas</label>
       <select id="doctor" name="doctor">
         {booking.doctorOptions.map((opt) => (
           <option value={opt}>{opt}</option>
@@ -114,9 +129,20 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
       <input id="email" name="email" type="email" required placeholder="vardas@pavyzdys.lt" />
     </div>
 
-    <div class="field">
-      <label for="preferred">Pageidaujamas laikas</label>
-      <input id="preferred" name="preferred" type="text" placeholder="pvz. trečiadienio popietė" />
+    <div class="row2">
+      <div class="field">
+        <label for="date">Data</label>
+        <input id="date" name="date" type="date" required />
+        <span class="hint">{booking.dateHint}</span>
+      </div>
+      <div class="field">
+        <label for="time">Laikas</label>
+        <select id="time" name="time" required>
+          {booking.timeSlots.map((slot) => (
+            <option value={slot}>{slot}</option>
+          ))}
+        </select>
+      </div>
     </div>
 
     <div class="field">
@@ -137,21 +163,31 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
       {booking.errorMessage}
     </div>
   </form>
+ </div>
 </section>
 
 <style>
   .booking {
-    padding: 140px 64px;
+    padding: 88px 64px;
+    border-top: 1px solid var(--color-line);
+  }
+  .booking-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 64px;
-    align-items: start;
+    align-items: stretch;
+  }
+  /* Left column is a flex column so the map can grow to fill the space
+     under the contact details and match the form's height. */
+  .booking-left {
+    display: flex;
+    flex-direction: column;
   }
 
   .eyebrow {
     font-family: var(--font-sans);
     font-size: 11px;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-ink-soft);
     font-weight: 500;
@@ -160,16 +196,16 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
   /* ── Left column ── */
   .booking-left h2 {
     font-family: var(--font-serif);
-    font-size: 84px;
-    letter-spacing: -0.035em;
-    line-height: 0.92;
+    font-size: clamp(36px, 4.5vw, 56px);
+    letter-spacing: -0.015em;
+    line-height: 1.1;
     font-weight: 400;
-    color: var(--color-forest);
-    margin-top: 20px;
+    color: var(--color-ink);
+    margin-top: 18px;
   }
   .booking-left h2 :global(em) {
-    font-style: italic;
-    color: var(--color-tan);
+    font-style: normal;
+    color: inherit;
   }
   .booking-left p {
     font-size: 16px;
@@ -189,9 +225,10 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
   .info .v {
     font-family: var(--font-serif);
     font-size: 20px;
-    color: var(--color-forest);
+    color: var(--color-ink);
     letter-spacing: -0.01em;
     line-height: 1.4;
+    overflow-wrap: anywhere;
   }
   .info .v a {
     color: inherit;
@@ -200,40 +237,29 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
     transition: color 0.2s, border-color 0.2s;
   }
   .info .v a:hover {
-    color: var(--color-tan);
-    border-color: var(--color-tan);
+    color: var(--color-ink-hover);
+    border-color: var(--color-ink-hover);
   }
 
-  /* ── Form ── */
+  /* ── Form (framed white card) ── */
   .form {
-    background: var(--color-bg-soft);
-    border-radius: 6px;
+    background: var(--color-bg);
+    border-radius: 8px;
     padding: 40px;
-    border: 1px solid var(--color-line);
+    border: 1px solid var(--color-line-strong);
   }
-  .step {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 32px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--color-ink-soft);
-  }
-  .step .on { color: var(--color-forest); font-weight: 700; }
 
   .form h3 {
     font-family: var(--font-serif);
-    font-size: 32px;
-    letter-spacing: -0.02em;
-    color: var(--color-forest);
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
     font-weight: 400;
     margin-bottom: 28px;
   }
   .form h3 em {
-    font-style: italic;
-    color: var(--color-tan);
+    font-style: normal;
+    color: inherit;
   }
 
   .field {
@@ -250,6 +276,11 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
   }
   .field input,
   .field select {
+    /* width + min-width keep long <option> labels from forcing the form
+       wider than narrow phone viewports (selects can't shrink below
+       their widest option otherwise). */
+    width: 100%;
+    min-width: 0;
     background: transparent;
     border: none;
     border-bottom: 1px solid var(--color-ink);
@@ -260,9 +291,19 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
     outline: none;
     border-radius: 0;
   }
-  .field input::placeholder { color: rgba(31, 42, 32, 0.35); }
+  .field input::placeholder { color: rgba(61, 113, 42, 0.45); }
   .field input:focus,
-  .field select:focus { border-bottom-color: var(--color-tan); }
+  .field select:focus { border-bottom-color: var(--color-ink-hover); }
+  .field input[type="date"] {
+    -webkit-appearance: none;
+    appearance: none;
+    min-height: 44px;
+  }
+  .field .hint {
+    font-size: 11px;
+    color: var(--color-ink-soft);
+    letter-spacing: 0.04em;
+  }
 
   .row2 {
     display: grid;
@@ -273,26 +314,28 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
   .submit {
     width: 100%;
     margin-top: 12px;
-    padding: 16px 24px;
+    padding: 18px 28px;
     border: none;
-    background: var(--color-forest);
-    color: var(--color-bg);
+    background: var(--color-brand);
+    color: var(--color-on-green);
     border-radius: 999px;
     font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1;
     letter-spacing: 0.04em;
     cursor: pointer;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 10px;
     transition: background 0.2s, opacity 0.2s;
   }
-  .submit:hover { background: var(--color-ink); }
+  .submit:hover { background: var(--color-ink-hover); }
   .submit:disabled { opacity: 0.5; cursor: not-allowed; }
   .submit .arrow {
     font-family: var(--font-serif);
-    font-style: italic;
+    font-style: normal;
   }
 
   .result {
@@ -302,15 +345,17 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
     font-size: 14px;
     line-height: 1.5;
   }
+  /* Success = framed pale-green note; error = solid green fill. Both stay
+     within the single-green palette. */
   .result.success {
-    background: rgba(45, 58, 46, 0.08);
-    color: var(--color-forest);
-    border: 1px solid rgba(45, 58, 46, 0.2);
+    background: rgba(61, 113, 42, 0.10);
+    color: var(--color-ink);
+    border: 1px solid var(--color-line-strong);
   }
   .result.error {
-    background: rgba(156, 107, 63, 0.1);
-    color: #6b3b1c;
-    border: 1px solid rgba(156, 107, 63, 0.3);
+    background: var(--color-ink);
+    color: var(--color-on-green);
+    border: 1px solid var(--color-ink);
   }
 
   /* Honeypot: visually hidden but still in the DOM */
@@ -322,16 +367,50 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
     opacity: 0;
   }
 
+  /* ── Interactive map (fills the left column under the contact info) ── */
+  .booking-map {
+    margin-top: 44px;
+    flex: 1 1 auto;          /* grow to absorb the empty space */
+    display: flex;
+    flex-direction: column;
+    min-height: 260px;
+  }
+  .booking-map .eyebrow { margin-bottom: 14px; }
+  .map-frame {
+    flex: 1 1 auto;
+    min-height: 230px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    line-height: 0;
+  }
+  .map-frame iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
   @media (max-width: 900px) {
     .booking {
+      padding: 64px 24px;
+    }
+    .booking-grid {
       grid-template-columns: 1fr;
       gap: 40px;
-      padding: 80px 24px;
     }
-    .booking-left h2 { font-size: 48px; }
+    .booking-left h2 { font-size: 36px; }
     .form { padding: 28px; }
     .infos { gap: 24px 18px; }
     .row2 { grid-template-columns: 1fr; }
+    /* Single column: give the map an explicit height (no form to match). */
+    .booking-map { margin-top: 32px; }
+    .map-frame,
+    .map-frame iframe { height: 300px; min-height: 0; }
+  }
+
+  @media (max-width: 500px) {
+    .infos { grid-template-columns: 1fr; }
   }
 </style>
 
@@ -339,6 +418,28 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
   const form = document.getElementById("booking-form") as HTMLFormElement | null;
   const success = document.getElementById("booking-success");
   const errorBox = document.getElementById("booking-error");
+
+  // Date picker: no past dates, no weekends (clinic works Mon–Fri).
+  const dateInput = document.getElementById("date") as HTMLInputElement | null;
+  if (dateInput) {
+    const today = new Date();
+    const pad = (n: number) => String(n).padStart(2, "0");
+    dateInput.min = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
+
+    dateInput.addEventListener("input", () => {
+      if (!dateInput.value) {
+        dateInput.setCustomValidity("");
+        return;
+      }
+      const day = new Date(`${dateInput.value}T00:00:00`).getDay();
+      dateInput.setCustomValidity(
+        day === 0 || day === 6
+          ? "Savaitgaliais nedirbame — pasirinkite darbo dieną (I–V)."
+          : ""
+      );
+      dateInput.reportValidity();
+    });
+  }
 
   if (form) {
     form.addEventListener("submit", async (e) => {

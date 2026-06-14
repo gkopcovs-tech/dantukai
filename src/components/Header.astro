@@ -16,10 +16,9 @@ import { site } from "../config/site";
     ))}
   </div>
 
-  <!-- Center: brand mark + wordmark -->
+  <!-- Center: real Ozodenta logo -->
   <a class="nav-logo" href="#top" aria-label={site.businessName}>
-    <span class="mark">{site.logoMark}</span>
-    <span class="name" set:html={site.businessNameHtml}></span>
+    <img src={site.logoSrc} alt={site.logoAlt} class="logo-img" width="200" height="33" />
   </a>
 
   <!-- Right: phone + booking pill (desktop) / hamburger (mobile) -->
@@ -53,7 +52,7 @@ import { site } from "../config/site";
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    padding: 28px 64px;
+    padding: 20px 64px;
     border-bottom: 1px solid var(--color-line);
     background: var(--color-bg);
     position: sticky;
@@ -72,39 +71,18 @@ import { site } from "../config/site";
     text-decoration: none;
     transition: color 0.2s;
   }
-  .nav-left a:hover { color: var(--color-tan); }
+  .nav-left a:hover { color: var(--color-ink-hover); }
 
   .nav-logo {
     display: flex;
     align-items: center;
-    gap: 10px;
     text-decoration: none;
     color: inherit;
   }
-  .nav-logo .mark {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: var(--color-forest);
-    display: grid;
-    place-items: center;
-    color: var(--color-bg);
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 15px;
-    font-weight: 500;
-  }
-  .nav-logo .name {
-    font-family: var(--font-serif);
-    font-size: 18px;
-    letter-spacing: -0.01em;
-    font-weight: 500;
-    color: var(--color-ink);
-  }
-  .nav-logo .name :global(em) {
-    font-style: italic;
-    color: var(--color-tan);
-    font-weight: 400;
+  .nav-logo .logo-img {
+    display: block;
+    height: 30px;
+    width: auto;
   }
 
   .nav-right {
@@ -118,22 +96,24 @@ import { site } from "../config/site";
     color: var(--color-ink-soft);
     text-decoration: none;
   }
-  .nav-right .phone:hover { color: var(--color-ink); }
+  .nav-right .phone:hover { color: var(--color-ink-hover); }
 
   .pill {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
-    padding: 11px 20px;
+    padding: 11px 22px;
     border-radius: 999px;
-    background: var(--color-forest);
-    color: var(--color-bg);
+    background: var(--color-brand);
+    color: var(--color-on-green);
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 600;
+    line-height: 1;
     text-decoration: none;
     transition: background 0.2s;
   }
-  .pill:hover { background: #1f2a20; }
+  .pill:hover { background: var(--color-ink-hover); }
 
   /* Hamburger — hidden on desktop, shown on mobile */
   .hamburger {
