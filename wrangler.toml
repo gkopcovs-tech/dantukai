@@ -13,6 +13,6 @@
 # fall back to its old default (Node 18), which fails this project's
 # `engines` requirement and breaks the build.
 
-name = "ozodenta-demo"
+name = "dantukai"
 compatibility_date = "2026-06-14"
 pages_build_output_dir = "dist"
