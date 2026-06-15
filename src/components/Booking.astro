@@ -329,14 +329,36 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    transition: background 0.2s, opacity 0.2s;
+    box-shadow: var(--btn-shadow);
+    transition: background 0.2s, opacity 0.2s,
+                transform 0.28s var(--ease-lux), box-shadow 0.28s var(--ease-lux);
   }
-  .submit:hover { background: var(--color-ink-hover); }
-  .submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  .submit:hover {
+    background: var(--color-ink-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--btn-shadow-hover);
+  }
+  .submit:active {
+    transform: translateY(0);
+    box-shadow: var(--btn-shadow-press);
+  }
+  .submit:focus-visible {
+    outline: 2px solid var(--color-ink-hover);
+    outline-offset: 3px;
+  }
+  .submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
   .submit .arrow {
     font-family: var(--font-serif);
     font-style: normal;
+    transition: transform 0.28s var(--ease-lux);
   }
+  /* Arrow glides forward on hover — signals "send". */
+  .submit:hover:not(:disabled) .arrow { transform: translateX(4px); }
 
   .result {
     margin-top: 20px;
