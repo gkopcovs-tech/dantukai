@@ -1,39 +1,26 @@
 ---
 // src/components/Footer.astro
 //
-// Dark forest footer with four columns on desktop:
-//   1. Brand wordmark + small tagline
-//   2. Visit address
-//   3. Site link list (Klinika)
-//   4. Contact links (phone / email / social)
-// Stacks vertically on mobile.
+// Minimal, centred footer with a single "Kontaktai" group:
+// address, phone and email. Stacks naturally on mobile.
 
 import { site } from "../config/site";
 
-const { footer, address } = site;
+const { footer, address, phone, phoneRaw, email } = site;
+
+const addressLine = [address.street, address.city].filter(Boolean).join(", ");
 ---
 
 <footer class="site-footer">
   <div class="top">
     <div class="col">
-      <h4>{footer.visitHeading}</h4>
-      <div class="addr">
-        {address.street}<br />
-        {address.postalCode} {address.city}<br />
-        {address.floorNote}
-      </div>
+      <h4>Kontaktai</h4>
+      <ul>
+        <li class="addr-item">{addressLine}</li>
+        <li><a href={`tel:${phoneRaw}`}>{phone}</a></li>
+        <li><a href={`mailto:${email}`}>{email}</a></li>
+      </ul>
     </div>
-
-    {footer.linkColumns.map((col) => (
-      <div class="col">
-        <h4>{col.heading}</h4>
-        <ul>
-          {col.items.map((item) => (
-            <li><a href={item.href}>{item.label}</a></li>
-          ))}
-        </ul>
-      </div>
-    ))}
   </div>
 
   <div class="bottom">
@@ -95,12 +82,8 @@ const { footer, address } = site;
   }
   ul a:hover { color: var(--color-ink-hover); }
 
-  .addr {
-    font-family: var(--font-serif);
-    font-size: 17px;
-    line-height: 1.6;
-    font-style: normal;
-    color: var(--color-ink);
+  .addr-item {
+    color: var(--color-ink-soft);
   }
 
   .bottom {
