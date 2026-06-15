@@ -108,6 +108,11 @@ export interface SiteConfig {
     floorNote: string;       // e.g. "(antras aukštas)"
   };
   mapEmbedUrl: string;
+  // Web3Forms access key for the booking form. This is a PUBLIC key (it is
+  // embedded in the page HTML by design), so it is safe to commit. Used as the
+  // default; PUBLIC_WEB3FORMS_KEY in the environment overrides it if set, which
+  // lets you swap the target inbox per client without editing code.
+  web3formsKey: string;
 
   // ── Hours ──
   openingHours: OpeningHour[];
@@ -249,6 +254,8 @@ export const site: SiteConfig = {
   // Keyless Google Maps embed (?output=embed) — interactive, no API key needed.
   mapEmbedUrl:
     "https://www.google.com/maps?q=Ozo%20g.%2020%2C%20Vilnius&z=16&output=embed",
+  // Public Web3Forms access key (demo → forwards form submissions by email).
+  web3formsKey: "0df29f9c-76a1-4020-9c9c-f28985a42b21",
 
   // ── Hours ─────────────────────────────────────────────────────────────────
   openingHours: [

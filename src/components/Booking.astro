@@ -20,7 +20,9 @@
 import { site } from "../config/site";
 
 const { booking, address } = site;
-const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
+// Env var wins if set (per-client/dashboard override); otherwise fall back to
+// the committed public key in site.ts so the build is self-contained.
+const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || site.web3formsKey;
 ---
 
 <section id="booking" class="booking">
