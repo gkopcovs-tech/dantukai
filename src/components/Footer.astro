@@ -1,8 +1,10 @@
 ---
 // src/components/Footer.astro
 //
-// Minimal, centred footer with a single "Kontaktai" group:
-// address, phone and email. Stacks naturally on mobile.
+// Responsive footer:
+//   • Desktop  → original multi-column layout (Aplankykite address +
+//     Klinika links + Susisiekti).
+//   • Mobile   → single centred "Kontaktai" group (address, phone, email).
 
 import { site } from "../config/site";
 
@@ -12,7 +14,31 @@ const addressLine = [address.street, address.city].filter(Boolean).join(", ");
 ---
 
 <footer class="site-footer">
-  <div class="top">
+  {/* Desktop: original multi-column layout */}
+  <div class="top top--desktop">
+    <div class="col">
+      <h4>{footer.visitHeading}</h4>
+      <div class="addr">
+        {address.street}<br />
+        {address.postalCode} {address.city}<br />
+        {address.floorNote}
+      </div>
+    </div>
+
+    {footer.linkColumns.map((col) => (
+      <div class="col">
+        <h4>{col.heading}</h4>
+        <ul>
+          {col.items.map((item) => (
+            <li><a href={item.href}>{item.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+
+  {/* Mobile: single Kontaktai group */}
+  <div class="top top--mobile">
     <div class="col">
       <h4>Kontaktai</h4>
       <ul>
@@ -82,9 +108,20 @@ const addressLine = [address.street, address.city].filter(Boolean).join(", ");
   }
   ul a:hover { color: var(--color-ink-hover); }
 
+  .addr {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.6;
+    font-style: normal;
+    color: var(--color-ink);
+  }
+
   .addr-item {
     color: var(--color-ink-soft);
   }
+
+  /* Show desktop layout by default; hide the mobile group. */
+  .top--mobile { display: none; }
 
   .bottom {
     padding-top: 36px;
@@ -104,5 +141,8 @@ const addressLine = [address.street, address.city].filter(Boolean).join(", ");
       gap: 40px 56px;
       padding-bottom: 44px;
     }
+    /* Swap to the single Kontaktai group on mobile. */
+    .top--desktop { display: none; }
+    .top--mobile { display: flex; }
   }
 </style>
