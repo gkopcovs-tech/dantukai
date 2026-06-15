@@ -1,18 +1,23 @@
-# Cloudflare Pages project config.
+# Cloudflare Workers config — static-assets site (Workers Builds).
 #
-# This makes the deploy reproducible instead of relying only on the
-# dashboard. Cloudflare reads `pages_build_output_dir` to know which
-# folder to publish after the build runs.
+# This project is deployed as a Cloudflare WORKER serving static assets
+# (not Cloudflare Pages). The build runs `npm run build` → outputs `dist/`,
+# then `wrangler deploy` uploads that folder via the [assets] binding below.
 #
-# Build settings (set these in the Pages dashboard → Settings → Build):
-#   Framework preset:        Astro
-#   Build command:           npm run build
-#   Build output directory:  dist
+# `name` MUST match the Workers project name (dantukai), or the deploy is
+# rejected. There is no `main` entry point — this is an assets-only Worker,
+# so Cloudflare just serves the files in `dist/`.
 #
-# Node version is pinned in `.nvmrc` (22.12.0) so Cloudflare doesn't
-# fall back to its old default (Node 18), which fails this project's
-# `engines` requirement and breaks the build.
+# Build settings (dashboard → Settings → Build):
+#   Build command:   npm run build
+#   Deploy command:  npx wrangler deploy   (default)
+#
+# Node version is pinned in `.nvmrc` (22.12.0) so Cloudflare doesn't fall
+# back to its old default (Node 18), which fails this project's `engines`
+# requirement and breaks the build.
 
 name = "dantukai"
 compatibility_date = "2026-06-14"
-pages_build_output_dir = "dist"
+
+[assets]
+directory = "./dist"
