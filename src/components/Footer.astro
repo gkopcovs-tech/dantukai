@@ -15,12 +15,7 @@ const { footer, address } = site;
 
 <footer class="site-footer">
   <div class="top">
-    <div class="brand-col">
-      <div class="brand" set:html={site.businessNameHtml + '<span class="dot">.</span>'}></div>
-      <p class="tag">{footer.brandTagline}</p>
-    </div>
-
-    <div>
+    <div class="col">
       <h4>{footer.visitHeading}</h4>
       <div class="addr">
         {address.street}<br />
@@ -30,7 +25,7 @@ const { footer, address } = site;
     </div>
 
     {footer.linkColumns.map((col) => (
-      <div>
+      <div class="col">
         <h4>{col.heading}</h4>
         <ul>
           {col.items.map((item) => (
@@ -48,53 +43,38 @@ const { footer, address } = site;
 </footer>
 
 <style>
+  /* Centred, minimal footer — symmetry + generous whitespace for a quiet,
+     luxury close. No brand wordmark; the three contact groups sit centred. */
   .site-footer {
     background: var(--color-bg);
     color: var(--color-ink);
-    padding: 72px 64px 40px;
+    padding: 96px 64px 48px;
     border-top: 1px solid var(--color-line-strong);
+    text-align: center;
   }
 
   .top {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr 1fr;
-    gap: 48px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 56px 104px;
     padding-bottom: 64px;
     border-bottom: 1px solid var(--color-line);
+  }
+  .col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   h4 {
     font-family: var(--font-sans);
     font-size: 11px;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--color-ink-soft);
     font-weight: 500;
-    margin-bottom: 20px;
-  }
-
-  .brand {
-    font-family: var(--font-serif);
-    font-size: 40px;
-    letter-spacing: -0.015em;
-    line-height: 1;
-    font-weight: 400;
-  }
-  .brand :global(em) {
-    font-style: normal;
-    color: inherit;
-  }
-  .brand :global(.dot) { color: var(--color-brand); }
-
-  .tag {
-    font-family: var(--font-sans);
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
-    letter-spacing: 0.02em;
-    display: block;
-    margin-top: 18px;
-    max-width: 320px;
-    line-height: 1.5;
+    margin-bottom: 22px;
   }
 
   ul {
@@ -103,7 +83,8 @@ const { footer, address } = site;
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    align-items: center;
+    gap: 14px;
     font-size: 14px;
     color: var(--color-ink);
   }
@@ -117,35 +98,28 @@ const { footer, address } = site;
   .addr {
     font-family: var(--font-serif);
     font-size: 17px;
-    line-height: 1.5;
+    line-height: 1.6;
     font-style: normal;
     color: var(--color-ink);
   }
 
   .bottom {
-    padding-top: 32px;
+    padding-top: 36px;
     display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
     font-size: 11px;
     color: var(--color-ink-soft);
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
   }
 
   @media (max-width: 900px) {
-    .site-footer { padding: 64px 24px 32px; }
+    .site-footer { padding: 72px 24px 36px; }
     .top {
-      grid-template-columns: 1fr 1fr;
-      gap: 32px;
-      padding-bottom: 40px;
+      gap: 40px 56px;
+      padding-bottom: 44px;
     }
-    .brand-col { grid-column: 1 / -1; }
-    .brand { font-size: 34px; }
-  }
-
-  @media (max-width: 500px) {
-    .top { grid-template-columns: 1fr; }
   }
 </style>

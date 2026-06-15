@@ -17,10 +17,8 @@ const { faq } = site;
     <div class="faq-head">
       <div class="eyebrow">{faq.eyebrow}</div>
       <h2 set:html={faq.headingHtml}></h2>
-      <p class="helper">
-        <span set:html={faq.helperHtml}></span>
-        <a href={`mailto:${site.email}`}>{site.email}</a>
-      </p>
+      <p class="helper" set:html={faq.helperHtml}></p>
+      <a class="helper-email" href={`mailto:${site.email}`}>{site.email}</a>
 
       <!-- Photo fills the empty space beside the question list. -->
       <div class="faq-photo">
@@ -115,17 +113,22 @@ const { faq } = site;
     font-size: 14px;
     color: var(--color-ink-soft);
     margin-top: 24px;
-    max-width: 320px;
+    max-width: 340px;
     line-height: 1.55;
   }
-  .helper a {
+  /* Email sits on its own line under the helper sentence, left-aligned with
+     it — keeps the contact line tidy instead of dangling inline. */
+  .helper-email {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 14px;
     color: var(--color-ink);
     font-weight: 500;
     text-decoration: none;
     border-bottom: 1px solid var(--color-line);
     transition: color 0.2s, border-color 0.2s;
   }
-  .helper a:hover {
+  .helper-email:hover {
     color: var(--color-ink-hover);
     border-color: var(--color-ink-hover);
   }

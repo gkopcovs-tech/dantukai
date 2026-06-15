@@ -310,11 +310,11 @@ export const site: SiteConfig = {
   ticker: {
     items: [
       "Visai šeimai",
+      "Vaikų odontologija",
       "58 paslaugos",
       "13 metų patirties",
-      "<em>Ozo g. 20, Vilnius</em>",
       "I–V 8:00–20:00",
-      "Vaikų odontologija",
+      "<em>Ozo g. 20, Vilnius</em>",
     ],
   },
 
@@ -461,7 +461,7 @@ export const site: SiteConfig = {
     eyebrow: "Klausimai",
     headingHtml: "Dažniausi<br><em>klausimai</em>",
     helperHtml:
-      "Nerandate atsakymo? Paskambinkite +370 685 32 229 arba parašykite — atsakome darbo valandomis.",
+      "Nerandate atsakymo? Paskambinkite +370&nbsp;685&nbsp;32&nbsp;229 arba parašykite — atsakome darbo valandomis.",
     items: [
       {
         question: "Kiek kainuoja konsultacija?",
