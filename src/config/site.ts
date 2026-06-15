@@ -259,7 +259,7 @@ export const site: SiteConfig = {
 
   // ── SEO ───────────────────────────────────────────────────────────────────
   seo: {
-    siteUrl: "https://ozodenta-demo.pages.dev",
+    siteUrl: "https://dantukai.gkopcovs.workers.dev",
     defaultTitle: "Ozodenta | Odontologijos klinika Vilniuje",
     defaultDescription:
       "Odontologijos klinika visai šeimai Vilniuje, Ozo g. 20. Terapinis gydymas, estetinis plombavimas, vaikų odontologija, protezavimas, burnos higiena, chirurgija ir implantai.",
